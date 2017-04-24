@@ -1,6 +1,6 @@
-Transformari 3D cu OpenGL
-Proiect de licenta
+# Transformari 3D cu OpenGL
+## Proiect de licenta
 Ionita Bogdan
-Universitatea Titu Maiorescu
-Facultatea de Informatica
+_Universitatea Titu Maiorescu
+Facultatea de Informatica_
 prof. Pirnau Mironela
