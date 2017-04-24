@@ -31,10 +31,10 @@ public:
 
 	virtual int getEntityType() const = 0;
 	// these flags MUST NOT change during the life time of the object, or else UNDEFINED BEHAVIOUR
-	virtual FunctionalityFlags getFunctionalityFlags() { return FunctionalityFlags::NONE; }
+	virtual FunctionalityFlags getFunctionalityFlags() const { return FunctionalityFlags::NONE; }
 
-	virtual void update(float dt) {}
-	virtual void draw(RenderContext const& ctx) {}
+	virtual void update(float dt) { assert(!"Forgot to override?"); }
+	virtual void draw(RenderContext const& ctx) { assert(!"Forgot to override?"); }
 
 	void destroy();
 	bool isZombie() const { return markedForDeletion_.load(std::memory_order_acquire); }

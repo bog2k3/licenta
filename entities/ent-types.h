@@ -10,8 +10,9 @@
 
 namespace EntTypes {
 enum {
-	E_INVALID 				= 0,
-	E_STATICMESH					= 1,
+	INVALID 				= 0,
+	STATICMESH				= 1,
+	CUBE					= 2,
 };
 }
 

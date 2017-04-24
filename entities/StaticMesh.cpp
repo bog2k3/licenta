@@ -5,14 +5,14 @@
  *      Author: bog
  */
 
-#include "EStaticMesh.h"
+#include "StaticMesh.h"
 
-EStaticMesh::EStaticMesh() {
+StaticMesh::StaticMesh() {
 	// TODO Auto-generated constructor stub
 
 }
 
-EStaticMesh::~EStaticMesh() {
+StaticMesh::~StaticMesh() {
 	// TODO Auto-generated destructor stub
 }
 

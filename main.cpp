@@ -12,6 +12,7 @@
 #include "OSD/SignalViewer.h"
 #include "OSD/EntityLabeler.h"
 #include "Infrastructure.h"
+#include "SessionManager.h"
 
 #include "utils/log.h"
 #include "utils/DrawList.h"
@@ -52,17 +53,6 @@ void onInputEventHandler(InputEvent& ev) {
 	}
 }
 
-#define FFMT(prec, X) std::fixed << std::setprecision(prec) << (X)
-#define IFMT(spac, X) std::fixed << std::setprecision(0) << std::setw(spac) << (X)
-
-void printStatus(float simulationTime, float realTime, float simDTAcc, float realDTAcc) {
-	LOGLN(	"SIM-TIME: " << IFMT(5, simulationTime)
-			<< "\tREAL-time: "<< IFMT(5, realTime)
-			<< "\tINST-MUL: " << FFMT(2, simDTAcc/realDTAcc)
-			<< "\tAVG-MUL: " << FFMT(2, simulationTime/realTime)
-		);
-}
-
 int main(int argc, char* argv[]) {
 	do {
 	#ifdef DEBUG
@@ -89,9 +79,7 @@ int main(int argc, char* argv[]) {
 
 		World world;
 
-		//randSeed(1424118659);
 		randSeed(time(NULL));
-		LOGLN("RAND seed: "<<rand_seed);
 
 		SignalViewer sigViewer(glm::vec3(0.75f, 0.1f, 1.f), glm::vec2(0.2f, 0.1f));
 
@@ -106,17 +94,12 @@ int main(int argc, char* argv[]) {
 		updateList.add(World::getInstance());
 		updateList.add(&sigViewer);
 
-		float realTime = 0;							// [s]
-		float simulationTime = 0;					// [s]
-		float lastPrintedSimTime = 0;				// [s]
-		float simDTAcc = 0; // [s] accumulated sim dt values since last status print
-		float realDTAcc = 0; // [s] accumulated real dt values since last status print
-		constexpr float simTimePrintInterval = 10.f; // [s]
-
 		float frameTime = 0;
-
 		sigViewer.addSignal("frameTime", &frameTime,
 				glm::vec3(1.f, 0.2f, 0.2f), 0.1f);
+
+		SessionManager::init(world);
+		SessionManager::startSession(SessionManager::TEST_SESSION);
 
 		// initial update:
 		updateList.update(0);
@@ -124,35 +107,16 @@ int main(int argc, char* argv[]) {
 		float t = glfwGetTime();
 		while (GLFWInput::checkInput()) {
 			float newTime = glfwGetTime();
-			float realDT = newTime - t;
-			frameTime = realDT;
-			realDTAcc += realDT;
+			frameTime = newTime - t;
 			t = newTime;
-			realTime += realDT;
 
 			// fixed time step for simulation (unless slowMo is on)
-			float simDT = updatePaused ? 0 : 0.02f;
+			float simDT = updatePaused ? 0 : frameTime;
 			if (slowMo) {
-				// use same fixed timestep in order to avoid breaking physics, but
-				// only update once every n frames to slow down
-				static float frameCounter = 0;
-				constexpr float cycleLength = 10; // frames
-				if (++frameCounter == cycleLength) {
-					frameCounter = 0;
-				} else
-					simDT = 0;
+				simDT *= 0.1f;
 			}
 
-			simulationTime += simDT;
-			simDTAcc += simDT;
-
-			if (simulationTime > lastPrintedSimTime+simTimePrintInterval) {
-				printStatus(simulationTime, realTime, simDTAcc, realDTAcc);
-				simDTAcc = realDTAcc = 0;
-				lastPrintedSimTime = simulationTime;
-			}
-
-			continuousUpdateList.update(realDT);
+			continuousUpdateList.update(frameTime);
 			if (simDT > 0) {
 				updateList.update(simDT);
 			}
