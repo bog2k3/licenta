@@ -8,11 +8,15 @@
 #include "Cube.h"
 
 Cube::Cube() {
-	// TODO Auto-generated constructor stub
-
 }
 
 Cube::~Cube() {
-	// TODO Auto-generated destructor stub
 }
 
+void Cube::update(float dt) {
+	// TODO
+}
+
+void Cube::draw(RenderContext const& ctx) {
+
+}
