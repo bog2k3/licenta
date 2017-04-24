@@ -1,2 +1,7 @@
 .settings
 Debug/licenta
+Debug/licenta.exe
+Debug/*.o
+Debug/*/*.o
+Debug/*.d
+Debug/*/*.d

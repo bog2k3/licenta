@@ -36,7 +36,7 @@ void Entity::destroy() {
 	return (SerializationObjectTypes)0;
 }*/
 
-glm::vec3 Entity::getPosition() {
+/*glm::vec3 Entity::getPosition() {
 	//return vec3xy(getWorldTransform());
-}
+}*/
 
