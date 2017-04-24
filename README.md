@@ -3,6 +3,6 @@
 Ionita Bogdan
 _Universitatea Titu Maiorescu
 
-Facultatea de Informatica_
+_Facultatea de Informatica
 
 prof. Pirnau Mironela
