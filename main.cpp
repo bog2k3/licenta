@@ -5,6 +5,7 @@
 #include "renderOpenGL/Renderer.h"
 #include "renderOpenGL/Viewport.h"
 #include "renderOpenGL/GLText.h"
+#include "renderOpenGL/MeshRenderer.h"
 #include "input/GLFWInput.h"
 #include "input/InputEvent.h"
 #include "World.h"
@@ -75,7 +76,8 @@ int main(int argc, char* argv[]) {
 		renderer.addViewport(&vp1);
 		auto shape2d = new Shape2D(&renderer);
 		auto gltext = new GLText(&renderer, "data/fonts/DejaVuSansMono_256_16_8.png", 8, 16, ' ', 22);
-		RenderContext renderContext( &vp1, shape2d, gltext);
+		auto mesher = new MeshRenderer(&renderer);
+		RenderContext renderContext( &vp1, shape2d, mesher, gltext);
 
 		World world;
 
