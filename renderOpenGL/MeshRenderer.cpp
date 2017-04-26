@@ -40,23 +40,28 @@ void MeshRenderer::renderMesh(Mesh& mesh, glm::mat4 worldTransform) {
 
 void MeshRenderer::render(Viewport* vp) {
 	glUseProgram(meshShaderProgram_);
+	glEnableVertexAttribArray(indexPos_);
+	glEnableVertexAttribArray(indexNorm_);
+	glEnableVertexAttribArray(indexUV1_);
+	glEnableVertexAttribArray(indexColor_);
+
 	auto matVP = vp->getCamera()->getMatViewProj();
-		/*glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		glUniformMatrix4fv(indexMatViewProj, 1, GL_FALSE, glm::value_ptr(vp->getCamera()->getMatViewProj()));
-		glEnableVertexAttribArray(indexPos);
-		glEnableVertexAttribArray(indexColor);
-
-		// render world-space triangle primitives:
-		glVertexAttribPointer(indexPos, 3, GL_FLOAT, GL_FALSE, sizeof(s_lineVertex), &bufferTri[0].pos);
-		glVertexAttribPointer(indexColor, 4, GL_FLOAT, GL_FALSE, sizeof(s_lineVertex), &bufferTri[0].rgba);
-		glDrawElements(GL_TRIANGLES, indicesTri.size(), GL_UNSIGNED_SHORT, &indicesTri[0]);
-		 */
 
 	for (auto &m : renderQueue_) {
 		auto matWVP = matVP * m.wldTransform_;
 		glUniformMatrix4fv(indexMatViewProj_, 1, GL_FALSE, glm::value_ptr(matWVP));
+
+		glBindBuffer(GL_ARRAY_BUFFER, m.pMesh_->getVertexBuffer());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.pMesh_->getIndexBuffer());
+		glVertexAttribPointer(indexPos_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, position));
+		glVertexAttribPointer(indexNorm_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, normal));
+		glVertexAttribPointer(indexUV1_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, UV1));
+		glVertexAttribPointer(indexColor_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, color));
+
+		glDrawElements(GL_TRIANGLES, m.pMesh_->getIndexCount(), GL_UNSIGNED_SHORT, 0);
 	}
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void MeshRenderer::purgeRenderQueue() {
