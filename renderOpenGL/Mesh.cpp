@@ -20,7 +20,7 @@ void Mesh::createBox(float width, float height, float depth) {
 
 }
 
-void Mesh::createSphere(float radius, int detail=10) {
+void Mesh::createSphere(float radius, int detail) {
 
 }
 

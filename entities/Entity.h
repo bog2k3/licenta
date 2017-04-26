@@ -9,6 +9,7 @@
 #define ENTITIES_ENTITY_H_
 
 #include "ent-types.h"
+#include "../utils/bitFlags.h"
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>

@@ -8,7 +8,8 @@
 #ifndef RENDEROPENGL_MESH_H_
 #define RENDEROPENGL_MESH_H_
 
-// TODO create a MeshRenderer: IRenderable, put in renderContext, it will manage all meshes
+#include <glm/vec3.hpp>
+
 class Mesh {
 public:
 	Mesh();

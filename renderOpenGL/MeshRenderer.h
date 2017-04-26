@@ -37,6 +37,12 @@ private:
 		meshRenderData(meshRenderData &&) = default;
 	};
 	std::vector<meshRenderData> renderQueue_;
+	unsigned meshShaderProgram_ = 0;
+	unsigned indexPos_ = 0;
+	unsigned indexNorm_ = 0;
+	unsigned indexUV1_ = 0;
+	unsigned indexColor_ = 0;
+	unsigned indexMatViewProj_ = 0;
 };
 
 #endif /* RENDEROPENGL_MESHRENDERER_H_ */

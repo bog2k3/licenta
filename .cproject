@@ -65,6 +65,21 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.exe.debug.1014091326.420677798" name="/" resourcePath="data">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cross.base.1737582064" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.base" unusedChildren="">
+							<option id="cdt.managedbuild.option.gnu.cross.prefix.329561820.1243110008" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.329561820"/>
+							<option id="cdt.managedbuild.option.gnu.cross.path.708410980.1143158956" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.708410980"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.371128419" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.854596238"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.343596000" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.375579899"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.c.linker.49776478" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.737188890"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.1060167716" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.928982109"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.archiver.289288381" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.862489463"/>
+							<tool id="cdt.managedbuild.tool.gnu.cross.assembler.1372522844" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.2067396676"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="data" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
@@ -83,7 +98,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.exe.release.2002755351." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.exe.release.561149082" name="Cygwin GCC" nonInternalBuilderId="cdt.managedbuild.target.gnu.builder.cygwin.exe.release" superClass="cdt.managedbuild.toolchain.gnu.cygwin.exe.release">
 							<targetPlatform binaryParser="" id="cdt.managedbuild.target.gnu.platform.cygwin.exe.release.411273222" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.cygwin.exe.release"/>
-							<builder autoBuildTarget="all" buildPath="${workspace_loc:/licenta}/Release" cleanBuildTarget="clean" id="org.eclipse.cdt.build.core.internal.builder.1542513026" incrementalBuildTarget="all" managedBuildOn="true" name="CDT Internal Builder" superClass="org.eclipse.cdt.build.core.internal.builder"/>
+							<builder autoBuildTarget="all" buildPath="${workspace_loc:/licenta}/Release" cleanBuildTarget="clean" id="org.eclipse.cdt.build.core.internal.builder.1542513026" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="org.eclipse.cdt.build.core.internal.builder"/>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.exe.release.1860206624" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.exe.release">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1923514019" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -129,6 +144,19 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.cygwin.exe.release.2002755351.493237190" name="/" resourcePath="data">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.cygwin.exe.release.2146354856" name="Cygwin GCC" superClass="cdt.managedbuild.toolchain.gnu.cygwin.exe.release" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.assembler.cygwin.exe.release.976124108" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.exe.release.1860206624"/>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1162622708" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1126395687"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.exe.release.1732817587" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.exe.release.458554667"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.release.1408105984" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.exe.release.1160935448"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.cygwin.exe.release.37838423" name="Cygwin C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.cygwin.exe.release.1647115819"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.exe.release.1742796687" name="Cygwin C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.cygwin.exe.release.1293204815"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="data" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
