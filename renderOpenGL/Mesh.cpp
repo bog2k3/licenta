@@ -27,3 +27,7 @@ void Mesh::createSphere(float radius, int detail) {
 void Mesh::setCenter(glm::vec3 center) {
 
 }
+
+void Mesh::commitChanges() {
+
+}
