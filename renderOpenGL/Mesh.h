@@ -17,9 +17,8 @@ public:
 	Mesh();
 	virtual ~Mesh();
 
-	void createBox(float width, float height, float depth);
-	void createSphere(float radius, int detail=10);
-	void setCenter(glm::vec3 center);
+	void createBox(glm::vec3 center, float width, float height, float depth);
+	void createSphere(glm::vec3 center, float radius, int detail=10);
 
 	unsigned getVertexBuffer() const { return vertexBuffer_; }
 	unsigned getIndexBuffer() const { return indexBuffer_; }

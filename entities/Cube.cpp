@@ -7,7 +7,8 @@
 
 #include "Cube.h"
 
-Cube::Cube() {
+Cube::Cube(float width, float height, float depth, glm::vec3 offset) {
+	mesh_.createBox(offset, width, height, depth);
 }
 
 Cube::~Cube() {
@@ -18,5 +19,5 @@ void Cube::update(float dt) {
 }
 
 void Cube::draw(RenderContext const& ctx) {
-
+	ctx.meshRenderer->renderMesh(mesh_, glm::mat4(1));
 }
