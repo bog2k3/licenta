@@ -15,8 +15,6 @@
 #include "Infrastructure.h"
 #include "SessionManager.h"
 
-#include "entities/Cube.h"
-
 #include "utils/log.h"
 #include "utils/DrawList.h"
 #include "utils/UpdateList.h"
@@ -32,6 +30,7 @@
 #include <cstdio>
 
 #include <sys/stat.h>
+#include "entities/Box.h"
 
 #ifdef DEBUG_DMALLOC
 #include <dmalloc.h>
@@ -105,7 +104,7 @@ int main(int argc, char* argv[]) {
 		SessionManager::init(world);
 		SessionManager::startSession(SessionManager::TEST_SESSION);
 
-		world.takeOwnershipOf(std::make_unique<Cube>(1, 1, 1));
+		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1));
 
 		// initial update:
 		updateList.update(0);

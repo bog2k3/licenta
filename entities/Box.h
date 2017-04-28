@@ -5,16 +5,17 @@
  *      Author: bog
  */
 
-#ifndef ENTITIES_CUBE_H_
-#define ENTITIES_CUBE_H_
+#ifndef ENTITIES_BOX_H_
+#define ENTITIES_BOX_H_
 
 #include "Entity.h"
 #include "../renderOpenGL/Mesh.h"
+#include "../physics/DynamicBody.h"
 
-class Cube: public Entity {
+class Box: public Entity {
 public:
-	Cube(float width, float height, float depth, glm::vec3 offset = glm::vec3(0));
-	virtual ~Cube();
+	Box(float width, float height, float depth, glm::vec3 offset = glm::vec3(0));
+	virtual ~Box();
 
 	int getEntityType() const override { return EntTypes::CUBE; }
 	FunctionalityFlags getFunctionalityFlags() const override { return FunctionalityFlags::DRAWABLE | FunctionalityFlags::UPDATABLE; }
@@ -24,6 +25,7 @@ public:
 
 private:
 	Mesh mesh_;
+	physics::DynamicBody body_;
 };
 
-#endif /* ENTITIES_CUBE_H_ */
+#endif /* ENTITIES_BOX_H_ */
