@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include utils/subdir.mk
 -include renderOpenGL/subdir.mk
+-include physics/subdir.mk
 -include math/subdir.mk
 -include input/subdir.mk
 -include entities/subdir.mk
@@ -43,19 +44,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: licenta.exe
+all: licenta
 
 # Tool invocations
-licenta.exe: $(OBJS) $(USER_OBJS)
+licenta: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++ -L/usr/local/lib -o "licenta.exe" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/usr/local/lib -o "licenta" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(C_DEPS)$(CPP_DEPS) licenta.exe
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(C_DEPS)$(CPP_DEPS) licenta
 	-@echo ' '
 
 .PHONY: all clean dependents

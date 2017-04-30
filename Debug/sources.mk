@@ -28,6 +28,7 @@ OSD \
 entities \
 input \
 math \
+physics \
 renderOpenGL \
 utils \
 

@@ -6,6 +6,8 @@
 CPP_SRCS += \
 ../renderOpenGL/Camera.cpp \
 ../renderOpenGL/GLText.cpp \
+../renderOpenGL/Mesh.cpp \
+../renderOpenGL/MeshRenderer.cpp \
 ../renderOpenGL/Renderer.cpp \
 ../renderOpenGL/Shape2D.cpp \
 ../renderOpenGL/TextureLoader.cpp \
@@ -16,6 +18,8 @@ CPP_SRCS += \
 OBJS += \
 ./renderOpenGL/Camera.o \
 ./renderOpenGL/GLText.o \
+./renderOpenGL/Mesh.o \
+./renderOpenGL/MeshRenderer.o \
 ./renderOpenGL/Renderer.o \
 ./renderOpenGL/Shape2D.o \
 ./renderOpenGL/TextureLoader.o \
@@ -26,6 +30,8 @@ OBJS += \
 CPP_DEPS += \
 ./renderOpenGL/Camera.d \
 ./renderOpenGL/GLText.d \
+./renderOpenGL/Mesh.d \
+./renderOpenGL/MeshRenderer.d \
 ./renderOpenGL/Renderer.d \
 ./renderOpenGL/Shape2D.d \
 ./renderOpenGL/TextureLoader.d \

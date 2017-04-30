@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Infrastructure.cpp \
+../SessionManager.cpp \
 ../World.cpp \
 ../main.cpp 
 
 OBJS += \
 ./Infrastructure.o \
+./SessionManager.o \
 ./World.o \
 ./main.o 
 
 CPP_DEPS += \
 ./Infrastructure.d \
+./SessionManager.d \
 ./World.d \
 ./main.d 
 

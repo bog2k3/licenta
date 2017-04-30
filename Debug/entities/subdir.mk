@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../entities/EStaticMesh.cpp \
-../entities/Entity.cpp 
+../entities/Box.cpp \
+../entities/Entity.cpp \
+../entities/StaticMesh.cpp 
 
 OBJS += \
-./entities/EStaticMesh.o \
-./entities/Entity.o 
+./entities/Box.o \
+./entities/Entity.o \
+./entities/StaticMesh.o 
 
 CPP_DEPS += \
-./entities/EStaticMesh.d \
-./entities/Entity.d 
+./entities/Box.d \
+./entities/Entity.d \
+./entities/StaticMesh.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
