@@ -6,6 +6,7 @@
 #include "renderOpenGL/Viewport.h"
 #include "renderOpenGL/GLText.h"
 #include "renderOpenGL/MeshRenderer.h"
+#include "renderOpenGL/Camera.h"
 #include "input/GLFWInput.h"
 #include "input/InputEvent.h"
 #include "World.h"
@@ -74,6 +75,7 @@ int main(int argc, char* argv[]) {
 
 		Renderer renderer;
 		Viewport vp1(0, 0, windowW, windowH);
+		vp1.getCamera()->moveTo({0, 0, -3});
 		renderer.addViewport(&vp1);
 		auto shape2d = new Shape2D(&renderer);
 		auto gltext = new GLText(&renderer, "data/fonts/DejaVuSansMono_256_16_8.png", 8, 16, ' ', 22);
@@ -104,7 +106,10 @@ int main(int argc, char* argv[]) {
 		SessionManager::init(world);
 		SessionManager::startSession(SessionManager::TEST_SESSION);
 
-		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1));
+		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, +1.f, 0.f)));
+		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, +1.f, 0.f)));
+		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, -1.f, 0.f)));
+		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, -1.f, 0.f)));
 
 		// initial update:
 		updateList.update(0);

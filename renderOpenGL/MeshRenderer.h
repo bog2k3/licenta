@@ -42,7 +42,7 @@ private:
 	unsigned indexNorm_ = 0;
 	unsigned indexUV1_ = 0;
 	unsigned indexColor_ = 0;
-	unsigned indexMatViewProj_ = 0;
+	unsigned indexMatPVW_ = 0;
 };
 
 #endif /* RENDEROPENGL_MESHRENDERER_H_ */

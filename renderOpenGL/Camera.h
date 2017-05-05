@@ -19,7 +19,7 @@ public:
 	virtual ~Camera();
 
 	const glm::mat4& getMatView() const { return matView_; }
-	const glm::mat4 getMatViewProj() const { return matProj_ * matView_; }
+	const glm::mat4 getMatProjView() const { return matProj_ * matView_; }
 
 	glm::vec3 getPos() const;
 	void moveTo(glm::vec3 const& wWhere);

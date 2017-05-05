@@ -2,6 +2,7 @@
 
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
 
 class Camera;
 
@@ -15,6 +16,7 @@ public:
 	Camera* getCamera() const { return pCamera; }
 	int getWidth() const { return viewportArea.z; }
 	int getHeight() const { return viewportArea.w; }
+	glm::vec2 getPosition() const { return glm::vec2(viewportArea.x, viewportArea.y); }
 	bool isEnabled() const { return mEnabled; }
 	bool containsPoint(glm::vec2 const&p) const;
 	/**

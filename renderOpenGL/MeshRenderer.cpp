@@ -27,7 +27,7 @@ MeshRenderer::MeshRenderer(Renderer* renderer) {
 	indexNorm_ = glGetAttribLocation(meshShaderProgram_, "vNormal");
 	indexUV1_ = glGetAttribLocation(meshShaderProgram_, "vUV1");
 	indexColor_ = glGetAttribLocation(meshShaderProgram_, "vColor");
-	indexMatViewProj_ = glGetUniformLocation(meshShaderProgram_, "mViewProj");
+	indexMatPVW_ = glGetUniformLocation(meshShaderProgram_, "mPVW");
 }
 
 MeshRenderer::~MeshRenderer() {
@@ -45,18 +45,21 @@ void MeshRenderer::render(Viewport* vp) {
 	glEnableVertexAttribArray(indexUV1_);
 	glEnableVertexAttribArray(indexColor_);
 
-	auto matVP = vp->getCamera()->getMatViewProj();
+	auto matPV = vp->getCamera()->getMatProjView();
 
 	for (auto &m : renderQueue_) {
-		auto matWVP = matVP * m.wldTransform_;
-		glUniformMatrix4fv(indexMatViewProj_, 1, GL_FALSE, glm::value_ptr(matWVP));
+		if (m.pMesh_->isDirty()) {
+			m.pMesh_->commitChanges();
+		}
+		auto matPVW = matPV * m.wldTransform_;
+		glUniformMatrix4fv(indexMatPVW_, 1, GL_FALSE, glm::value_ptr(matPVW));
 
 		glBindBuffer(GL_ARRAY_BUFFER, m.pMesh_->getVertexBuffer());
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.pMesh_->getIndexBuffer());
 		glVertexAttribPointer(indexPos_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, position));
 		glVertexAttribPointer(indexNorm_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, normal));
-		glVertexAttribPointer(indexUV1_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, UV1));
-		glVertexAttribPointer(indexColor_, 3, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, color));
+		glVertexAttribPointer(indexUV1_, 2, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, UV1));
+		glVertexAttribPointer(indexColor_, 4, GL_FLOAT, GL_FALSE, sizeof(Mesh::s_Vertex), (void*)offsetof(Mesh::s_Vertex, color));
 
 		glDrawElements(GL_TRIANGLES, m.pMesh_->getIndexCount(), GL_UNSIGNED_SHORT, 0);
 	}
