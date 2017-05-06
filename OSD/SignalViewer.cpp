@@ -59,7 +59,7 @@ void SignalViewer::update(float dt) {
 		s.source_->update(dt);
 }
 
-void SignalViewer::draw(RenderContext const& ctx) {
+void SignalViewer::draw() {
 	constexpr float yDivisionSize = 20; // pixels
 	constexpr int maxYDivisions = 5;
 	constexpr float textSize = 14;
@@ -75,15 +75,15 @@ void SignalViewer::draw(RenderContext const& ctx) {
 	size.x *= ctx.viewport->getWidth();
 	size.y *= ctx.viewport->getHeight();
 	for (auto &s : sourceInfo_) {
-		ctx.shape->setViewportSpaceDraw(true);
-		ctx.shape->drawRectangle(pos, uPos_.z, size, frameColor);
+		Shape2D::get()->setViewportSpaceDraw(true);
+		Shape2D::get()->drawRectangle(pos, uPos_.z, size, frameColor);
 		std::stringstream stitle;
 		stitle << s.name_;
 		if (s.source_->getNumSamples())
 			stitle << " : " << s.source_->getSample(s.source_->getNumSamples()-1);
 		else
 			stitle << " (no values)";
-		ctx.text->print(stitle.str(), pos.x, pos.y, uPos_.z, textSize, s.color_);
+		GLText::get()->print(stitle.str(), pos.x, pos.y, uPos_.z, textSize, s.color_);
 		float sMin = 1.e20f, sMax = -1.e20f;
 		// scan all samples and seek min/max values:
 		for (unsigned i=0; i<s.source_->getNumSamples(); i++) {
@@ -112,23 +112,23 @@ void SignalViewer::draw(RenderContext const& ctx) {
 		glm::vec2 prev(pos.x, pos.y + size.y * 0.5f);
 		for (unsigned i=0; i<s.source_->getNumSamples(); i++) {
 			glm::vec2 crt(prev.x + xAxisZoom, pos.y + size.y - (s.source_->getSample(i)-sMin) * yScale);
-			ctx.shape->drawLine(prev, crt, uPos_.z, s.color_);
+			Shape2D::get()->drawLine(prev, crt, uPos_.z, s.color_);
 			prev = crt;
 		}
 		// draw value axis division lines & labels
 		if (sMin * sMax < 0) {
 			// zero line is visible
 			float zeroY = pos.y+size.y + sMin*yScale;
-			ctx.shape->drawLine(glm::vec2(pos.x, zeroY), glm::vec2(pos.x+size.x, zeroY), uPos_.z, frameColor);
+			Shape2D::get()->drawLine(glm::vec2(pos.x, zeroY), glm::vec2(pos.x+size.x, zeroY), uPos_.z, frameColor);
 		}
 		int nYDivs = min(maxYDivisions, (int)(size.y / yDivisionSize));
 		int nDecimals = s.source_->getNumSamples() ? -log10(sMax - sMin) : 0;
 		for (int i=1; i<nYDivs; i++) {
 			float lineY = pos.y + size.y - i * yDivisionSize;
-			ctx.shape->drawLine(glm::vec2(pos.x, lineY), glm::vec2(pos.x+size.x, lineY), uPos_.z, divisionColor);
+			Shape2D::get()->drawLine(glm::vec2(pos.x, lineY), glm::vec2(pos.x+size.x, lineY), uPos_.z, divisionColor);
 			std::stringstream ss;
 			ss << std::setprecision(nDecimals) << sMin + (sMax-sMin) * i / nYDivs;
-			ctx.text->print(ss.str(), pos.x - (ss.str().size()+1) * spacePerChar, lineY+5, uPos_.z, textSize, divisionLabelColor);
+			GLText::get()->print(ss.str(), pos.x - (ss.str().size()+1) * spacePerChar, lineY+5, uPos_.z, textSize, divisionLabelColor);
 		}
 
 		pos.y += size.y + 15;

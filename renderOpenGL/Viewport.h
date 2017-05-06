@@ -15,8 +15,8 @@ public:
 	glm::vec3 getBkColor() const { return backgroundColor_; }
 	void setBkColor(glm::vec3 c) { backgroundColor_ = c; }
 	Camera* getCamera() const { return pCamera; }
-	int getWidth() const { return viewportArea.z; }
-	int getHeight() const { return viewportArea.w; }
+	int width() const { return viewportArea.z; }
+	int height() const { return viewportArea.w; }
 	glm::vec2 getPosition() const { return glm::vec2(viewportArea.x, viewportArea.y); }
 	bool isEnabled() const { return mEnabled; }
 	bool containsPoint(glm::vec2 const&p) const;

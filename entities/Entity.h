@@ -15,9 +15,6 @@
 #include <glm/vec3.hpp>
 #include <atomic>
 
-class RenderContext;
-//struct aabb;
-
 class Entity {
 public:
 	virtual ~Entity();
@@ -35,7 +32,7 @@ public:
 	virtual FunctionalityFlags getFunctionalityFlags() const { return FunctionalityFlags::NONE; }
 
 	virtual void update(float dt) { assert(!"Forgot to override?"); }
-	virtual void draw(RenderContext const& ctx) { assert(!"Forgot to override?"); }
+	virtual void draw() { assert(!"Forgot to override?"); }
 
 	void destroy();
 	bool isZombie() const { return markedForDeletion_.load(std::memory_order_acquire); }

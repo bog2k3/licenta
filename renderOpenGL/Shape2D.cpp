@@ -52,6 +52,11 @@ Shape2D::~Shape2D() {
 	glDeleteProgram(lineShaderProgram);
 }
 
+void Shape2D::unload() {
+	delete instance;
+	instance = nullptr;
+}
+
 void Shape2D::render(Viewport* vp) {
 	glUseProgram(lineShaderProgram);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -75,11 +80,11 @@ void Shape2D::render(Viewport* vp) {
 	glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
 
 	// set up viewport space settings:
-	float sx = 2.f / (vp->getWidth()-1);
-	float sy = -2.f / (vp->getHeight()-1);
+	float sx = 2.f / (vp->width()-1);
+	float sy = -2.f / (vp->height()-1);
 	float sz = -1.e-2f;
 	glm::mat4x4 matVP_to_UniformScale(glm::scale(glm::mat4(), glm::vec3(sx, sy, sz)));
-	int vpw = vp->getWidth(), vph = vp->getHeight();
+	int vpw = vp->width(), vph = vp->height();
 	glm::mat4x4 matVP_to_Uniform(glm::translate(matVP_to_UniformScale,
 			glm::vec3(-vpw/2, -vph/2, 0)));
 	glUniformMatrix4fv(indexMatViewProj, 1, GL_FALSE, glm::value_ptr(matVP_to_Uniform));
@@ -110,11 +115,11 @@ void Shape2D::purgeRenderQueue() {
 	indicesTriVPSP.clear();
 }
 
-void Shape2D::drawLine(glm::vec2 const &point1, glm::vec2 const &point2, float z, glm::vec3 const &rgb) {
+void Shape2D::drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec3 const &rgb) {
 	drawLine(point1, point2, z, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawLine(glm::vec2 const &point1, glm::vec2 const &point2, float z, glm::vec4 const &rgba) {
+void Shape2D::drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferVPSP : &buffer;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesVPSP : &indices;
 	s_lineVertex s;
@@ -190,11 +195,11 @@ void Shape2D::drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec4
 	//TODO must tesselate into triangles
 }
 
-void Shape2D::drawRectangle(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec3 const &rgb) {
+void Shape2D::drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb) {
 	drawRectangle(pos, z, size, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawRectangle(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec4 const &rgba) {
+void Shape2D::drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferVPSP : &buffer;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesVPSP : &indices;
 	s_lineVertex sVertex;
@@ -222,11 +227,11 @@ void Shape2D::drawRectangle(glm::vec2 const &pos, float z, glm::vec2 const &size
 	pInd->push_back(pBuf->size()-4);
 }
 
-void Shape2D::drawRectangleCentered(glm::vec2 const &pos, float z, glm::vec2 const &size, float rotation, glm::vec3 const &rgb) {
+void Shape2D::drawRectangleCentered(ViewportCoord pos, float z, glm::vec2 const &size, float rotation, glm::vec3 const &rgb) {
 	drawRectangleCentered(pos, z, size, rotation, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawRectangleCentered(glm::vec2 const &pos, float z, glm::vec2 const &size, float rotation, glm::vec4 const &rgba) {
+void Shape2D::drawRectangleCentered(ViewportCoord pos, float z, glm::vec2 const &size, float rotation, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferVPSP : &buffer;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesVPSP : &indices;
 	float halfW = size.x * 0.5f;
@@ -256,11 +261,11 @@ void Shape2D::drawRectangleCentered(glm::vec2 const &pos, float z, glm::vec2 con
 	pInd->push_back(pBuf->size()-4);
 }
 
-void Shape2D::drawRectangleFilled(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec3 const &rgb) {
+void Shape2D::drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb) {
 	drawRectangleFilled(pos, z, size, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawRectangleFilled(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec4 const &rgba) {
+void Shape2D::drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferTriVPSP : &bufferTri;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesTriVPSP : &indicesTri;
 	s_lineVertex sVertex;
@@ -287,11 +292,11 @@ void Shape2D::drawRectangleFilled(glm::vec2 const &pos, float z, glm::vec2 const
 	pInd->push_back(pBuf->size()-1);
 }
 
-void Shape2D::drawCircle(glm::vec2 const &pos, float radius, float z, int nSides, glm::vec3 const &rgb) {
+void Shape2D::drawCircle(ViewportCoord pos, float radius, float z, int nSides, glm::vec3 const &rgb) {
 	drawCircle(pos, radius, z, nSides, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawCircle(glm::vec2 const &pos, float radius, float z, int nSides, glm::vec4 const &rgba) {
+void Shape2D::drawCircle(ViewportCoord pos, float radius, float z, int nSides, glm::vec4 const &rgba) {
 	// make a polygon out of the circle
 	float phiStep = 2 * PI * 1.f / nSides;
 	glm::vec2 *v = new glm::vec2[nSides];

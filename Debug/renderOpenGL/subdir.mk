@@ -12,6 +12,7 @@ CPP_SRCS += \
 ../renderOpenGL/Shape2D.cpp \
 ../renderOpenGL/TextureLoader.cpp \
 ../renderOpenGL/Viewport.cpp \
+../renderOpenGL/ViewportCoord.cpp \
 ../renderOpenGL/glToolkit.cpp \
 ../renderOpenGL/shader.cpp 
 
@@ -24,6 +25,7 @@ OBJS += \
 ./renderOpenGL/Shape2D.o \
 ./renderOpenGL/TextureLoader.o \
 ./renderOpenGL/Viewport.o \
+./renderOpenGL/ViewportCoord.o \
 ./renderOpenGL/glToolkit.o \
 ./renderOpenGL/shader.o 
 
@@ -36,6 +38,7 @@ CPP_DEPS += \
 ./renderOpenGL/Shape2D.d \
 ./renderOpenGL/TextureLoader.d \
 ./renderOpenGL/Viewport.d \
+./renderOpenGL/ViewportCoord.d \
 ./renderOpenGL/glToolkit.d \
 ./renderOpenGL/shader.d 
 

@@ -11,6 +11,8 @@
 #include "GLText.h"
 #include "MeshRenderer.h"
 #include "../utils/DrawList.h"
+#include "../utils/assert.h"
+
 #include <stdexcept>
 
 Renderer::~Renderer() {
@@ -32,6 +34,27 @@ void Renderer::addViewport(std::string name, Viewport &vp) {
 	viewports_[name] = &vp;
 }
 
+Viewport* Renderer::getViewport(std::string name) const {
+	auto it = viewports_.find(name);
+	if (it == viewports_.end()) {
+		return nullptr;
+	} else
+		return it->second;
+}
+
+std::vector<Viewport*> Renderer::getViewports() const {
+	std::vector<Viewport*> ret;
+	for (auto p : viewports_)
+		ret.push_back(p.second);
+	return ret;
+}
+
+void Renderer::deleteViewport(std::string const& name) {
+	auto it = viewports_.find(name);
+	assertDbg(it != viewports_.end() && "non existing viewport");
+	viewports_.erase(it);
+}
+
 void Renderer::render() {
 	for (auto r : renderComponents_) {
 		for (auto &vp : viewports_) {
@@ -40,5 +63,12 @@ void Renderer::render() {
 			r->render(vp.second);
 		}
 		r->purgeRenderQueue();
+	}
+}
+
+void Renderer::unload() {
+	for (auto r : renderComponents_) {
+		r->purgeRenderQueue();
+		r->unload();
 	}
 }

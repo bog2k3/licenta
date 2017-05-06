@@ -15,7 +15,6 @@
 #include <type_traits>
 #include <functional>
 
-class RenderContext;
 class SignalDataSource;
 
 class SignalViewer {
@@ -51,7 +50,7 @@ public:
 	}
 
 	void update(float dt);
-	void draw(RenderContext const& ctx);
+	void draw();
 
 private:
 	std::vector<DataInfo> sourceInfo_;

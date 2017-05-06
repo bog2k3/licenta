@@ -7,10 +7,11 @@
 
 #include "Mesh.h"
 #include <GL/glew.h>
+#include <GL/gl.h>
 
 Mesh::Mesh() {
 	uint bufs[2];
-	glCreateBuffers(2, bufs);
+	glGenBuffers(2, bufs);
 	vertexBuffer_ = bufs[0];
 	indexBuffer_ = bufs[1];
 }

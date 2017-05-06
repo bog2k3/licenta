@@ -1,37 +1,31 @@
 #pragma once
 
+#include "../renderOpenGL/ViewportCoord.h"
+
 #include <string>
 #include <glm/vec3.hpp>
-
-class RenderContext;
 
 class Label
 {
 public:
 
-	enum class RenderMode {
-		WorldSpace,
-		ScreenSpace
-	};
+	Label(std::string value, ViewportCoord pos, float z, float textSize, glm::vec3 color);
 
-	Label(std::string const& value, glm::vec3 const& pos, float textSize, glm::vec3 const& color);
-
-	void setText(std::string const& text) { value_ = text; }
-	void setColor(glm::vec3 const& rgb) { color_ = rgb; }
+	void setText(std::string text) { value_ = text; }
+	void setColor(glm::vec3 rgb) { color_ = rgb; }
 	void setTextSize(float size) { textSize_ = size; }
-	void setPos(glm::vec3 const& pos) { pos_ = pos; }
-	void setRenderMode(RenderMode mode) { renderMode_ = mode; }
+	void setPos(ViewportCoord pos) { pos_ = pos; }
 
-	glm::vec2 getBoxSize(RenderContext const& ctx);
+	glm::vec2 boxSize() const;
 
-	void draw(RenderContext const& ctx);
+	void draw();
 
 	bool drawFrame_ = true;
 
 protected:
-	glm::vec3 pos_;
+	ViewportCoord pos_;
+	float z_;
 	glm::vec3 color_;
 	float textSize_;
 	std::string value_;
-	RenderMode renderMode_ = RenderMode::WorldSpace;
 };

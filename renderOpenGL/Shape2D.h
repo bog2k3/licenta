@@ -20,16 +20,16 @@ class Viewport;
 
 class Shape2D : public IRenderable {
 public:
-	static void init(Renderer* renderer);
 	static Shape2D* get();
-	virtual ~Shape2D();
+	virtual ~Shape2D() override;
+	static void init(Renderer* renderer);
 
 	// set up the next draw calls to be executed in viewport space or world space
 	void setViewportSpaceDraw(bool value) { viewportSpaceEnabled_ = value; }
 
 	// draw a single line segment
-	void drawLine(glm::vec2 const &point1, glm::vec2 const &point2, float z, glm::vec3 const &rgb);
-	void drawLine(glm::vec2 const &point1, glm::vec2 const &point2, float z, glm::vec4 const &rgba);
+	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec3 const &rgb);
+	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec4 const &rgba);
 	// draw a list of separate lines (pairs of two vertices)
 	void drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec3 const &rgb);
 	void drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec4 const &rgba);
@@ -37,14 +37,14 @@ public:
 	void drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec3 const &rgb);
 	void drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec4 const &rgba);
 	// draw a rectangle; pos is the top-left position
-	void drawRectangle(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
-	void drawRectangle(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
+	void drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
+	void drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
 	// draw a rectangle; pos is the center position
-	void drawRectangleCentered(glm::vec2 const &pos, float z, glm::vec2 const &size, float rotation, glm::vec3 const &rgb);
-	void drawRectangleCentered(glm::vec2 const &pos, float z, glm::vec2 const &size, float rotation, glm::vec4 const &rgba);
+	void drawRectangleCentered(ViewportCoord pos, float z, glm::vec2 const &size, float rotation, glm::vec3 const &rgb);
+	void drawRectangleCentered(ViewportCoord pos, float z, glm::vec2 const &size, float rotation, glm::vec4 const &rgba);
 	// draw a filled rectangle; pos is the center position
-	void drawRectangleFilled(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
-	void drawRectangleFilled(glm::vec2 const &pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
+	void drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
+	void drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
 	// draw a polygon
 	void drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec3 const &rgb);
 	void drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec4 const &rgba);
@@ -52,18 +52,19 @@ public:
 	void drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec3 const &rgb);
 	void drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec4 const &rgba);
 	// draw a circle
-	void drawCircle(glm::vec2 const &pos, float radius, float , int nSides, glm::vec3 const &rgb);
-	void drawCircle(glm::vec2 const &pos, float radius, float , int nSides, glm::vec4 const &rgba);
+	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec3 const &rgb);
+	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec4 const &rgba);
 	// draw a filled circle
-	void drawCircleFilled(glm::vec2 const &pos, float radius, float , int nSides, glm::vec3 const &rgb);
-	void drawCircleFilled(glm::vec2 const &pos, float radius, float , int nSides, glm::vec4 const &rgba);
+	void drawCircleFilled(ViewportCoord pos, float radius, float , int nSides, glm::vec3 const &rgb);
+	void drawCircleFilled(ViewportCoord pos, float radius, float , int nSides, glm::vec4 const &rgba);
 
 protected:
-	Shape2D();
+	Shape2D(Renderer* renderer);
 
 private:
 	void render(Viewport* vp) override;
 	void purgeRenderQueue() override;
+	void unload() override;
 
 	struct s_lineVertex {
 		glm::vec3 pos;	// position X,Y,Z

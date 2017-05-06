@@ -12,10 +12,28 @@
 #include "shader.hpp"
 #include "Camera.h"
 
+#include "../utils/assert.h"
+
 #include <GL/glew.h>
 #include <GL/gl.h>
 
 #include <glm/gtc/type_ptr.hpp>
+
+static MeshRenderer* instance = nullptr;
+
+void MeshRenderer::init(Renderer* renderer) {
+	instance = new MeshRenderer(renderer);
+}
+
+MeshRenderer* MeshRenderer::get() {
+	assertDbg(instance && "must be initialized first!");
+	return instance;
+}
+
+void MeshRenderer::unload() {
+	delete instance;
+	instance = nullptr;
+}
 
 MeshRenderer::MeshRenderer(Renderer* renderer) {
 	renderer->registerRenderable(this);

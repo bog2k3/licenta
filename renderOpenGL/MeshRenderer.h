@@ -18,14 +18,19 @@ class Renderer;
 
 class MeshRenderer: public IRenderable {
 public:
-	MeshRenderer(Renderer* renderer);
-	virtual ~MeshRenderer();
+	static void init(Renderer* renderer);
+	virtual ~MeshRenderer() override;
+	static MeshRenderer* get();
 
 	void renderMesh(Mesh& mesh, glm::mat4 worldTransform = glm::mat4(1));
+
+protected:
+	MeshRenderer(Renderer* renderer);
 
 private:
 	void render(Viewport* pCrtViewport) override;
 	void purgeRenderQueue() override;
+	void unload() override;
 
 	struct meshRenderData {
 		Mesh* pMesh_;

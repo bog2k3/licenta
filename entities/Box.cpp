@@ -20,6 +20,6 @@ void Box::update(float dt) {
 	body_.update(dt);
 }
 
-void Box::draw(RenderContext const& ctx) {
-	ctx.meshRenderer->renderMesh(mesh_, body_.getTransformation(physics::DynamicBody::TransformSpace::World));
+void Box::draw() {
+	MeshRenderer::get()->renderMesh(mesh_, body_.getTransformation(physics::DynamicBody::TransformSpace::World));
 }

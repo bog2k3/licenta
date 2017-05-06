@@ -86,7 +86,6 @@ int main(int argc, char* argv[]) {
 		SignalViewer sigViewer(glm::vec3(0.75f, 0.1f, 1.f), glm::vec2(0.2f, 0.1f));
 
 		DrawList drawList;
-		renderer.setDrawList(drawList);
 		drawList.add(World::getInstance());
 		drawList.add(&sigViewer);
 		drawList.add(&EntityLabeler::getInstance());
@@ -127,15 +126,15 @@ int main(int argc, char* argv[]) {
 			// wait until previous frame finishes rendering and show frame output:
 			gltEnd();
 			// build the render queue for the current frame
-			renderer.buildQueue();
+			drawList.draw();
 
-			renderContext.text->print("Transformari 3D - Ionita Bogdan Florin", 20, vp1.getHeight()-20, 0, 16, glm::vec3(0.2f, 0.4, 1.0f));
+			GLText::get()->print("Transformari 3D - Ionita Bogdan Florin", 20, vp1.getHeight()-20, 0, 16, glm::vec3(0.2f, 0.4, 1.0f));
 
 			if (updatePaused) {
-				renderContext.text->print("PAUSED", vp1.getWidth() / 2, vp1.getHeight() / 2, 0, 32, glm::vec3(1.f, 0.8f, 0.2f));
+				GLText::get()->print("PAUSED", vp1.getWidth() / 2, vp1.getHeight() / 2, 0, 32, glm::vec3(1.f, 0.8f, 0.2f));
 			}
 			if (slowMo) {
-				renderContext.text->print("~~ Slow Motion ON ~~", 10, 45, 0, 18, glm::vec3(1.f, 0.5f, 0.1f));
+				GLText::get()->print("~~ Slow Motion ON ~~", 10, 45, 0, 18, glm::vec3(1.f, 0.5f, 0.1f));
 			}
 
 			// do the actual openGL render for the previous frame (which is independent of our world)

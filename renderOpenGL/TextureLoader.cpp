@@ -86,7 +86,7 @@ unsigned TextureLoader::loadFromPNG(const string filename, int * width, int * he
 
     // variables to pass to get info
     int bit_depth, color_type;
-    uint32_t temp_width, temp_height;
+    png_uint_32 temp_width, temp_height;
 
     // get info about png
     png_get_IHDR(png_ptr, info_ptr, &temp_width, &temp_height, &bit_depth, &color_type,
