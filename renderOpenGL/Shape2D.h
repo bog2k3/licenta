@@ -31,11 +31,11 @@ public:
 	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec3 const &rgb);
 	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec4 const &rgba);
 	// draw a list of separate lines (pairs of two vertices)
-	void drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec3 const &rgb);
-	void drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec4 const &rgba);
+	void drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
+	void drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
 	// draw a line strip (connected lines)
-	void drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec3 const &rgb);
-	void drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec4 const &rgba);
+	void drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
+	void drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
 	// draw a rectangle; pos is the top-left position
 	void drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
 	void drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
@@ -46,11 +46,11 @@ public:
 	void drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
 	void drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
 	// draw a polygon
-	void drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec3 const &rgb);
-	void drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec4 const &rgba);
+	void drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
+	void drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
 	// draw a filled polygon
-	void drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec3 const &rgb);
-	void drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec4 const &rgba);
+	void drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
+	void drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
 	// draw a circle
 	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec3 const &rgb);
 	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec4 const &rgba);

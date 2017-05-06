@@ -134,11 +134,11 @@ void Shape2D::drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm:
 	pInd->push_back(pBuf->size()-1);
 }
 
-void Shape2D::drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec3 const &rgb) {
+void Shape2D::drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb) {
 	drawLineList(verts, nVerts, z, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec4 const &rgba) {
+void Shape2D::drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferVPSP : &buffer;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesVPSP : &indices;
 	s_lineVertex s;
@@ -150,11 +150,11 @@ void Shape2D::drawLineList(glm::vec2* verts, int nVerts, float z, glm::vec4 cons
 	}
 }
 
-void Shape2D::drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec3 const &rgb) {
+void Shape2D::drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb) {
 	drawLineStrip(verts, nVerts, z, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec4 const &rgba) {
+void Shape2D::drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferVPSP : &buffer;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesVPSP : &indices;
 	s_lineVertex s;
@@ -168,11 +168,11 @@ void Shape2D::drawLineStrip(glm::vec2* verts, int nVerts, float z, glm::vec4 con
 	}
 }
 
-void Shape2D::drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec3 const &rgb) {
+void Shape2D::drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb) {
 	drawPolygon(verts, nVerts, z, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec4 const &rgba) {
+void Shape2D::drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba) {
 	auto *pBuf = viewportSpaceEnabled_ ? &bufferVPSP : &buffer;
 	auto *pInd = viewportSpaceEnabled_ ? &indicesVPSP : &indices;
 	s_lineVertex sVertex;
@@ -187,11 +187,11 @@ void Shape2D::drawPolygon(glm::vec2 *verts, int nVerts, float z, glm::vec4 const
 	pInd->push_back(pBuf->size()-nVerts);
 }
 
-void Shape2D::drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec3 const &rgb) {
+void Shape2D::drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb) {
 	drawPolygonFilled(verts, nVerts, z, glm::vec4(rgb, 1));
 }
 
-void Shape2D::drawPolygonFilled(glm::vec2 *verts, int nVerts, float z, glm::vec4 const &rgba) {
+void Shape2D::drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba) {
 	//TODO must tesselate into triangles
 }
 
