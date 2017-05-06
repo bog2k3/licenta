@@ -12,7 +12,8 @@ public:
 	Viewport(int x, int y, int w, int h);
 	virtual ~Viewport();
 
-	glm::vec4 getBkColor() const { return glm::vec4(0); }
+	glm::vec3 getBkColor() const { return backgroundColor_; }
+	void setBkColor(glm::vec3 c) { backgroundColor_ = c; }
 	Camera* getCamera() const { return pCamera; }
 	int getWidth() const { return viewportArea.z; }
 	int getHeight() const { return viewportArea.w; }
@@ -37,4 +38,5 @@ protected:
 	glm::vec4 viewportArea;
 	Camera* pCamera;
 	bool mEnabled;
+	glm::vec3 backgroundColor_;
 };

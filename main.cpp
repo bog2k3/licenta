@@ -31,7 +31,6 @@
 #include <cstdio>
 
 #include <sys/stat.h>
-#include "entities/Box.h"
 
 #ifdef DEBUG_DMALLOC
 #include <dmalloc.h>
@@ -74,13 +73,11 @@ int main(int argc, char* argv[]) {
 		GLFWInput::onInputEvent.add(onInputEventHandler);
 
 		Renderer renderer;
-		Viewport vp1(0, 0, windowW, windowH);
-		vp1.getCamera()->moveTo({0, 0, -3});
-		renderer.addViewport(&vp1);
-		auto shape2d = new Shape2D(&renderer);
-		auto gltext = new GLText(&renderer, "data/fonts/DejaVuSansMono_256_16_8.png", 8, 16, ' ', 22);
-		auto mesher = new MeshRenderer(&renderer);
-		RenderContext renderContext( &vp1, shape2d, mesher, gltext);
+		//Viewport vp1(0, 0, windowW, windowH);
+		//vp1.getCamera()->moveTo({0, 0, -3});
+		//renderer.addViewport(&vp1);
+
+		//RenderContext renderContext(&vp1, shape2d, mesher, gltext);
 
 		World world;
 
@@ -89,6 +86,7 @@ int main(int argc, char* argv[]) {
 		SignalViewer sigViewer(glm::vec3(0.75f, 0.1f, 1.f), glm::vec2(0.2f, 0.1f));
 
 		DrawList drawList;
+		renderer.setDrawList(drawList);
 		drawList.add(World::getInstance());
 		drawList.add(&sigViewer);
 		drawList.add(&EntityLabeler::getInstance());
@@ -105,11 +103,6 @@ int main(int argc, char* argv[]) {
 
 		SessionManager::init(world);
 		SessionManager::startSession(SessionManager::TEST_SESSION);
-
-		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, +1.f, 0.f)));
-		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, +1.f, 0.f)));
-		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, -1.f, 0.f)));
-		world.takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, -1.f, 0.f)));
 
 		// initial update:
 		updateList.update(0);
@@ -133,8 +126,8 @@ int main(int argc, char* argv[]) {
 
 			// wait until previous frame finishes rendering and show frame output:
 			gltEnd();
-			// draw builds the render queue for the current frame
-			drawList.draw(renderContext);
+			// build the render queue for the current frame
+			renderer.buildQueue();
 
 			renderContext.text->print("Transformari 3D - Ionita Bogdan Florin", 20, vp1.getHeight()-20, 0, 16, glm::vec3(0.2f, 0.4, 1.0f));
 
@@ -151,7 +144,7 @@ int main(int argc, char* argv[]) {
 			// now rendering is on-going, move on to the next update:
 		}
 
-		delete renderContext.shape;
+		renderer.unload();
 		Infrastructure::shutDown();
 	} while (0);
 

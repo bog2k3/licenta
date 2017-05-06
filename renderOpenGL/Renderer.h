@@ -10,8 +10,7 @@
 
 #include "IRenderable.h"
 #include <vector>
-#include <functional>
-
+#include <map>
 
 class Renderer {
 public:
@@ -19,12 +18,20 @@ public:
 	Renderer();
 
 	void registerRenderable(IRenderable* r);
-	void addViewport(Viewport* vp);
+
+	void addViewport(std::string name, Viewport &vp);
+	Viewport* getViewport(std::string name) const;
+	std::vector<Viewport*> getViewports() const;
+	void deleteViewport(std::string const& name);
+	void clearViewports() { viewports_.clear(); }
+
 	void render();
 
+	void unload();
+
 protected:
-	std::vector<IRenderable*> renderComponents;
-	std::vector<Viewport*> viewports;
+	std::vector<IRenderable*> renderComponents_;
+	std::map<std::string, Viewport*> viewports_;
 };
 
 #endif /* RENDERER_H_ */

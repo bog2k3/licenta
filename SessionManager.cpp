@@ -7,6 +7,7 @@
 
 #include "SessionManager.h"
 #include "World.h"
+#include "entities/Box.h"
 
 World* SessionManager::wld_ = nullptr;
 
@@ -36,7 +37,10 @@ void SessionManager::resetSession() {
 }
 
 void SessionManager::createTestSession() {
-
+	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, +1.f, 0.f)));
+	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, +1.f, 0.f)));
+	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, -1.f, 0.f)));
+	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, -1.f, 0.f)));
 }
 
 void SessionManager::createTransformSession() {

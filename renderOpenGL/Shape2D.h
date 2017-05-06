@@ -20,7 +20,8 @@ class Viewport;
 
 class Shape2D : public IRenderable {
 public:
-	Shape2D(Renderer* renderer);
+	static void init(Renderer* renderer);
+	static Shape2D* get();
 	virtual ~Shape2D();
 
 	// set up the next draw calls to be executed in viewport space or world space
@@ -56,6 +57,9 @@ public:
 	// draw a filled circle
 	void drawCircleFilled(glm::vec2 const &pos, float radius, float , int nSides, glm::vec3 const &rgb);
 	void drawCircleFilled(glm::vec2 const &pos, float radius, float , int nSides, glm::vec4 const &rgba);
+
+protected:
+	Shape2D();
 
 private:
 	void render(Viewport* vp) override;

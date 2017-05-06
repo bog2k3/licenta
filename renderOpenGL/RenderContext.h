@@ -21,21 +21,14 @@ struct RenderLayers {
 class RenderContext {
 public:
 	const Viewport* const viewport;
-	Shape2D* const shape;
-	MeshRenderer* const meshRenderer;
-	GLText* const text;
-
 	RenderLayers enabledLayers;
 
 	RenderContext()
-		: viewport(nullptr)
-		, shape(nullptr)
-		, meshRenderer(nullptr)
-		, text(nullptr) {
+		: viewport(nullptr) {
 	}
 
-	RenderContext(Viewport* vp, Shape2D* shape, MeshRenderer* mesher, GLText* text)
-		: viewport(vp), shape(shape), meshRenderer(mesher), text(text) {
+	RenderContext(Viewport* vp)
+		: viewport(vp) {
 	}
 };
 

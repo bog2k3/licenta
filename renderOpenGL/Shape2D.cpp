@@ -21,6 +21,17 @@
 #define GLEW_NO_GLU
 #include <GL/glew.h>
 
+static Shape2D* instance = nullptr;
+
+void Shape2D::init(Renderer* renderer) {
+	instance = new Shape2D(renderer);
+}
+
+Shape2D* Shape2D::get() {
+	assertDbg(instance && "must be initialized first!");
+	return instance;
+}
+
 Shape2D::Shape2D(Renderer* renderer)
 	: lineShaderProgram(0)
 	, indexPos(0)
