@@ -135,6 +135,19 @@ int main(int argc, char* argv[]) {
 					{20, 20, ViewportCoord::absolute, ViewportCoord::bottom | ViewportCoord::left},
 					0, 16, glm::vec3(0.2f, 0.4, 1.0f));
 
+			GLText::get()->print("Top-Left",
+					{5, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::left},
+					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
+			GLText::get()->print("Top-Right",
+					{10, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right},
+					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
+			GLText::get()->print("Bottom-Left",
+					{5, 5, ViewportCoord::percent, ViewportCoord::bottom| ViewportCoord::left},
+					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
+			GLText::get()->print("Bottom-Right",
+					{10, 5, ViewportCoord::percent, ViewportCoord::bottom | ViewportCoord::right},
+					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
+
 			if (updatePaused) {
 				GLText::get()->print("PAUSED",
 						{1, 1, ViewportCoord::percent},
