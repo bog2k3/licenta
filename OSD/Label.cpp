@@ -1,6 +1,7 @@
 #include "Label.h"
 #include "../renderOpenGL/RenderContext.h"
 #include "../renderOpenGL/Viewport.h"
+#include "../renderOpenGL/ViewportCoord.h"
 #include "../renderOpenGL/GLText.h"
 #include "../renderOpenGL/Shape2D.h"
 #include "../math/math3D.h"
@@ -21,10 +22,11 @@ void Label::draw() {
 	GLText::get()->print(value_, pos_, z_, textSize_, color_);
 	if (drawFrame_) {
 		glm::vec2 rectSize = boxSize();
+		auto vsz = ViewportCoord(rectSize.x, rectSize.y);
 		Shape2D::get()->drawRectangle(
 				pos_.adjust(5, 5),
 				z_,
-				(rectSize + glm::vec2(5, 5)),
+				vsz.adjust(5, 5),
 				color_);
 	}
 }

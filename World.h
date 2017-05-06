@@ -49,7 +49,7 @@ public:
 	void getEntitiesInBox(std::vector<Entity*> &out, int filterTypes, Entity::FunctionalityFlags filterFlags, glm::vec2 const& pos, float radius, bool clipToCircle);
 
 	void update(float dt);
-	void draw(RenderContext const& ctx);
+	void draw();
 
 	// this is thread safe by design; if called from the synchronous loop that executes deferred actions, it's executed immediately, else added to the queue
 	void queueDeferredAction(std::function<void()> &&fun);

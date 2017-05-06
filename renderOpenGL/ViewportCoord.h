@@ -8,9 +8,13 @@
 #ifndef RENDEROPENGL_VIEWPORTCOORD_H_
 #define RENDEROPENGL_VIEWPORTCOORD_H_
 
+#include <glm/vec2.hpp>
+
 #include <functional>
+#include <vector>
 
 class Viewport;
+class Adjustment;
 
 class ViewportCoord {
 public:
@@ -28,8 +32,10 @@ public:
 
 	using userCallback = std::function<float(Viewport* vp)>;
 
+	ViewportCoord() = default;
+
 	// builds an absolute coordinate (in pixels) or relative (in percents of viewport size)
-	ViewportCoord(float x, float y, anchors a = (anchors)(left | top), type t = absolute)
+	ViewportCoord(float x, float y, type t = absolute, anchors a = (anchors)(left | top))
 		: anchor_(a), type_(t), x_(x), y_(y) {
 	}
 
@@ -42,13 +48,27 @@ public:
 	// creates a new coordinate representation translated by the given amount
 	// the values are interpreted according to the coordinate type
 	ViewportCoord adjust(float dx, float dy) const;
+	ViewportCoord adjust(glm::vec2 const& d) const;
 
+	// creates a new coordinate representation scaled by a factor
+	ViewportCoord scale(float s) const;
+
+	ViewportCoord operator+(ViewportCoord const& x) const;
+	ViewportCoord operator-(ViewportCoord const& x) const;
+	ViewportCoord operator*(float s) const { return scale(s); }
+	ViewportCoord operator/(float s) const { return scale(1.f / s); }
+
+	// get only x or y component:
+	ViewportCoord x() const;
+	ViewportCoord y() const;
+
+	// compute the actual pixel value within a viewport:
 	float x(Viewport* vp) const;
 	float y(Viewport* vp) const;
 
 private:
-	anchors anchor_;
-	type type_;
+	anchors anchor_ = (anchors)(left | top);
+	type type_ = absolute;
 	float x_ = 0;
 	float y_ = 0;
 	userCallback xc_;
@@ -57,6 +77,17 @@ private:
 	ViewportCoord(anchors a, type t, float x, float y, userCallback xc, userCallback yc)
 		: anchor_(a), type_(t), x_(x), y_(y), xc_(xc), yc_(yc) {
 	}
+
+	std::vector<Adjustment> deferredAdjustments_;
+};
+
+struct Adjustment {
+	enum {
+		add,
+		scale
+	} type;
+	ViewportCoord value;
+	float weight;
 };
 
 #endif /* RENDEROPENGL_VIEWPORTCOORD_H_ */

@@ -9,21 +9,24 @@
 #define RENDERER_H_
 
 #include "IRenderable.h"
+#include "IViewportManager.h"
 #include <vector>
 #include <map>
 
-class Renderer {
+class Renderer : public IViewportManager {
 public:
 	virtual ~Renderer();
-	Renderer();
+	Renderer(int windowWidth, int windowHeight);
 
 	void registerRenderable(IRenderable* r);
 
-	void addViewport(std::string name, Viewport &vp);
-	Viewport* getViewport(std::string name) const;
-	std::vector<Viewport*> getViewports() const;
-	void deleteViewport(std::string const& name);
-	void clearViewports() { viewports_.clear(); }
+	int windowWidth() const override { return winW_; }
+	int windowHeight() const override { return winH_; }
+	void addViewport(std::string name, std::unique_ptr<Viewport> vp) override;
+	Viewport* getViewport(std::string name) const override;
+	std::vector<Viewport*> getViewports() const override;
+	void deleteViewport(std::string const& name) override;
+	void clearViewports() override { viewports_.clear(); }
 
 	void render();
 
@@ -31,7 +34,10 @@ public:
 
 protected:
 	std::vector<IRenderable*> renderComponents_;
-	std::map<std::string, Viewport*> viewports_;
+	std::map<std::string, std::unique_ptr<Viewport>> viewports_;
+
+	int winW_ = 0;
+	int winH_ = 0;
 };
 
 #endif /* RENDERER_H_ */

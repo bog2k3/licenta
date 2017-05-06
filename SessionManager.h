@@ -9,10 +9,11 @@
 #define SESSIONMANAGER_H_
 
 class World;
+class IViewportManager;
 
 class SessionManager {
 public:
-	static void init(World& world);
+	static void init(World& world, IViewportManager& vpm);
 
 	enum SessionTypes {
 		TEST_SESSION,
@@ -24,6 +25,7 @@ public:
 
 private:
 	static World* wld_;
+	static IViewportManager* vpm_;
 
 	static void resetSession();
 	static void createTestSession();

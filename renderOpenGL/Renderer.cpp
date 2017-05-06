@@ -18,7 +18,9 @@
 Renderer::~Renderer() {
 }
 
-Renderer::Renderer() {
+Renderer::Renderer(int winW, int winH)
+	: winW_(winW), winH_(winH)
+{
 	Shape2D::init(this);
 	GLText::init(this, "data/fonts/DejaVuSansMono_256_16_8.png", 8, 16, ' ', 22);
 	MeshRenderer::init(this);
@@ -30,8 +32,8 @@ void Renderer::registerRenderable(IRenderable* r) {
 	renderComponents_.push_back(r);
 }
 
-void Renderer::addViewport(std::string name, Viewport &vp) {
-	viewports_[name] = &vp;
+void Renderer::addViewport(std::string name, std::unique_ptr<Viewport> vp) {
+	viewports_[name] = std::move(vp);
 }
 
 Viewport* Renderer::getViewport(std::string name) const {
@@ -39,13 +41,13 @@ Viewport* Renderer::getViewport(std::string name) const {
 	if (it == viewports_.end()) {
 		return nullptr;
 	} else
-		return it->second;
+		return it->second.get();
 }
 
 std::vector<Viewport*> Renderer::getViewports() const {
 	std::vector<Viewport*> ret;
-	for (auto p : viewports_)
-		ret.push_back(p.second);
+	for (auto &p : viewports_)
+		ret.push_back(p.second.get());
 	return ret;
 }
 
@@ -60,7 +62,7 @@ void Renderer::render() {
 		for (auto &vp : viewports_) {
 			if (!vp.second->isEnabled())
 				continue;
-			r->render(vp.second);
+			r->render(vp.second.get());
 		}
 		r->purgeRenderQueue();
 	}

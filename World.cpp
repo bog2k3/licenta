@@ -168,10 +168,10 @@ void World::queueDeferredAction(std::function<void()> &&fun) {
 		deferredActions_.push_back(std::move(fun));
 }
 
-void World::draw(RenderContext const& ctx) {
+void World::draw() {
 	// draw entities
 	for (auto e : entsToDraw)
-		e->draw(ctx);
+		e->draw();
 }
 
 bool World::testEntity(Entity &e, int filterTypes, Entity::FunctionalityFlags filterFlags) {

@@ -38,6 +38,6 @@ void Camera::updateProj() {
 	float zNear = 0.5f;
 	float zFar = 50.f;
 	matProj_ = glm::perspectiveFovLH(fov_, (float)pViewport_->width(), (float)pViewport_->height(), zNear, zFar);
-	matProj_ = glm::translate(glm::vec3(pViewport_->getPosition(), 0)) * matProj_;
+	matProj_ = glm::translate(glm::vec3(pViewport_->position(), 0)) * matProj_;
 }
 

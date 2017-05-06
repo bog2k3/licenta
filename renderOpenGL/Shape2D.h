@@ -9,6 +9,7 @@
 #define RENDEROPENGL_SHAPE2D_H_
 
 #include "IRenderable.h"
+#include "ViewportCoord.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -18,45 +19,43 @@
 class Renderer;
 class Viewport;
 
+// renders 2D shapes in viewport space
 class Shape2D : public IRenderable {
 public:
 	static Shape2D* get();
 	virtual ~Shape2D() override;
 	static void init(Renderer* renderer);
 
-	// set up the next draw calls to be executed in viewport space or world space
-	void setViewportSpaceDraw(bool value) { viewportSpaceEnabled_ = value; }
-
 	// draw a single line segment
-	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec3 const &rgb);
-	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec4 const &rgba);
+	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec3 rgb);
+	void drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec4 rgba);
 	// draw a list of separate lines (pairs of two vertices)
-	void drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
-	void drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
+	void drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec3 rgb);
+	void drawLineList(ViewportCoord verts[], int nVerts, float z, glm::vec4 rgba);
 	// draw a line strip (connected lines)
-	void drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
-	void drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
+	void drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec3 rgb);
+	void drawLineStrip(ViewportCoord verts[], int nVerts, float z, glm::vec4 rgba);
 	// draw a rectangle; pos is the top-left position
-	void drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
-	void drawRectangle(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
+	void drawRectangle(ViewportCoord pos, float z, ViewportCoord size, glm::vec3 rgb);
+	void drawRectangle(ViewportCoord pos, float z, ViewportCoord size, glm::vec4 rgba);
 	// draw a rectangle; pos is the center position
-	void drawRectangleCentered(ViewportCoord pos, float z, glm::vec2 const &size, float rotation, glm::vec3 const &rgb);
-	void drawRectangleCentered(ViewportCoord pos, float z, glm::vec2 const &size, float rotation, glm::vec4 const &rgba);
+	void drawRectangleCentered(ViewportCoord pos, float z, ViewportCoord size, glm::vec3 rgb);
+	void drawRectangleCentered(ViewportCoord pos, float z, ViewportCoord size, glm::vec4 rgba);
 	// draw a filled rectangle; pos is the center position
-	void drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec3 const &rgb);
-	void drawRectangleFilled(ViewportCoord pos, float z, glm::vec2 const &size, glm::vec4 const &rgba);
+	void drawRectangleFilled(ViewportCoord pos, float z, ViewportCoord size, glm::vec3 rgb);
+	void drawRectangleFilled(ViewportCoord pos, float z, ViewportCoord size, glm::vec4 rgba);
 	// draw a polygon
-	void drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
-	void drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
+	void drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec3 rgb);
+	void drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec4 rgba);
 	// draw a filled polygon
-	void drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec3 const &rgb);
-	void drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec4 const &rgba);
+	void drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec3 rgb);
+	void drawPolygonFilled(ViewportCoord verts[], int nVerts, float z, glm::vec4 rgba);
 	// draw a circle
-	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec3 const &rgb);
-	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec4 const &rgba);
+	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec3 rgb);
+	void drawCircle(ViewportCoord pos, float radius, float , int nSides, glm::vec4 rgba);
 	// draw a filled circle
-	void drawCircleFilled(ViewportCoord pos, float radius, float , int nSides, glm::vec3 const &rgb);
-	void drawCircleFilled(ViewportCoord pos, float radius, float , int nSides, glm::vec4 const &rgba);
+	void drawCircleFilled(ViewportCoord pos, float radius, float , int nSides, glm::vec3 rgb);
+	void drawCircleFilled(ViewportCoord pos, float radius, float , int nSides, glm::vec4 rgba);
 
 protected:
 	Shape2D(Renderer* renderer);
@@ -67,24 +66,20 @@ private:
 	void unload() override;
 
 	struct s_lineVertex {
-		glm::vec3 pos;	// position X,Y,Z
+		ViewportCoord pos;
+		float z;
 		glm::vec4 rgba; 	// color
 	};
-	// line buffers for world-space and viewport-space rendering:
-	std::vector<s_lineVertex> buffer;
-	std::vector<unsigned short> indices;
-	std::vector<s_lineVertex> bufferVPSP;	// vertex buffer for ViewPortSPace rendering
-	std::vector<unsigned short> indicesVPSP; // index buffer for ViewPortSPace rendering
-	// triangle buffers for world-space and viewport-space rendering:
-	std::vector<s_lineVertex> bufferTri;
-	std::vector<unsigned short> indicesTri;
-	std::vector<s_lineVertex> bufferTriVPSP;	// triangle vertex buffer for ViewPortSPace rendering
-	std::vector<unsigned short> indicesTriVPSP; // triangle index buffer for ViewPortSPace rendering
-	unsigned lineShaderProgram;
-	unsigned indexPos;
-	unsigned indexColor;
-	unsigned indexMatViewProj;
-	bool viewportSpaceEnabled_ = false;
+	// line buffers
+	std::vector<s_lineVertex> buffer_;
+	std::vector<unsigned short> indices_;
+	// triangle buffers
+	std::vector<s_lineVertex> bufferTri_;
+	std::vector<unsigned short> indicesTri_;
+	unsigned lineShaderProgram_;
+	unsigned indexPos_;
+	unsigned indexColor_;
+	unsigned indexMatViewProj_;
 };
 
 #endif /* RENDEROPENGL_SHAPE2D_H_ */

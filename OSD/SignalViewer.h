@@ -8,6 +8,8 @@
 #ifndef OSD_SIGNALVIEWER_H_
 #define OSD_SIGNALVIEWER_H_
 
+#include "../renderOpenGL/ViewportCoord.h"
+
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 #include <memory>
@@ -37,7 +39,7 @@ public:
 		}
 	};
 
-	SignalViewer(glm::vec3 const& uniformPos, glm::vec2 const& uniformSize);
+	SignalViewer(ViewportCoord pos, float z, ViewportCoord size);
 	virtual ~SignalViewer();
 
 	void addSignal(std::string const& name, float* pValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f);
@@ -54,8 +56,9 @@ public:
 
 private:
 	std::vector<DataInfo> sourceInfo_;
-	glm::vec3 uPos_;
-	glm::vec2 uSize_;
+	ViewportCoord pos_;
+	float z_;
+	ViewportCoord size_;
 };
 
 class SignalDataSource {

@@ -63,7 +63,7 @@ void MeshRenderer::render(Viewport* vp) {
 	glEnableVertexAttribArray(indexUV1_);
 	glEnableVertexAttribArray(indexColor_);
 
-	auto matPV = vp->getCamera()->getMatProjView();
+	auto matPV = vp->camera()->getMatProjView();
 
 	for (auto &m : renderQueue_) {
 		if (m.pMesh_->isDirty()) {

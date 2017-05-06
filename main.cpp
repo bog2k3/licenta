@@ -20,6 +20,7 @@
 #include "utils/DrawList.h"
 #include "utils/UpdateList.h"
 #include "utils/rand.h"
+#include "utils/bitFlags.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
@@ -72,7 +73,7 @@ int main(int argc, char* argv[]) {
 		GLFWInput::initialize(gltGetWindow());
 		GLFWInput::onInputEvent.add(onInputEventHandler);
 
-		Renderer renderer;
+		Renderer renderer(windowW, windowH);
 		//Viewport vp1(0, 0, windowW, windowH);
 		//vp1.getCamera()->moveTo({0, 0, -3});
 		//renderer.addViewport(&vp1);
@@ -83,7 +84,9 @@ int main(int argc, char* argv[]) {
 
 		randSeed(time(NULL));
 
-		SignalViewer sigViewer(glm::vec3(0.75f, 0.1f, 1.f), glm::vec2(0.2f, 0.1f));
+		SignalViewer sigViewer(
+				ViewportCoord(20, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
+				ViewportCoord(15, 10, ViewportCoord::percent));
 
 		DrawList drawList;
 		drawList.add(World::getInstance());
@@ -100,7 +103,7 @@ int main(int argc, char* argv[]) {
 		sigViewer.addSignal("frameTime", &frameTime,
 				glm::vec3(1.f, 0.2f, 0.2f), 0.1f);
 
-		SessionManager::init(world);
+		SessionManager::init(world, renderer);
 		SessionManager::startSession(SessionManager::TEST_SESSION);
 
 		// initial update:
@@ -128,13 +131,17 @@ int main(int argc, char* argv[]) {
 			// build the render queue for the current frame
 			drawList.draw();
 
-			GLText::get()->print("Transformari 3D - Ionita Bogdan Florin", 20, vp1.getHeight()-20, 0, 16, glm::vec3(0.2f, 0.4, 1.0f));
+			GLText::get()->print("Transformari 3D - Ionita Bogdan Florin",
+					{20, 20, ViewportCoord::absolute, ViewportCoord::bottom | ViewportCoord::left},
+					0, 16, glm::vec3(0.2f, 0.4, 1.0f));
 
 			if (updatePaused) {
-				GLText::get()->print("PAUSED", vp1.getWidth() / 2, vp1.getHeight() / 2, 0, 32, glm::vec3(1.f, 0.8f, 0.2f));
+				GLText::get()->print("PAUSED",
+						{1, 1, ViewportCoord::percent},
+						0, 32, glm::vec3(1.f, 0.8f, 0.2f));
 			}
 			if (slowMo) {
-				GLText::get()->print("~~ Slow Motion ON ~~", 10, 45, 0, 18, glm::vec3(1.f, 0.5f, 0.1f));
+				GLText::get()->print("~~ Slow Motion ON ~~", {10, 45}, 0, 18, glm::vec3(1.f, 0.5f, 0.1f));
 			}
 
 			// do the actual openGL render for the previous frame (which is independent of our world)
