@@ -18,15 +18,17 @@ public:
 	Camera(Viewport* vp);
 	virtual ~Camera();
 
-	const glm::mat4& getMatView() const { return matView_; }
-	const glm::mat4 getMatProjView() const { return matProj_ * matView_; }
+	const glm::mat4& matView() const { return matView_; }
+	const glm::mat4& matProj() const { return matProj_; }
+	const glm::mat4 matProjView() const { return matProj_ * matView_; }
 
-	glm::vec3 getPos() const;
+	glm::vec3 position() const;
+	glm::vec3 direction() const;
 	void moveTo(glm::vec3 const& where);
 	void lookAt(glm::vec3 const& where);
 	void transformView(glm::mat4 const& rTrans);
 	void setViewTransform(glm::mat4 aTrans);
-	float getFOV() const { return fov_; }
+	float FOV() const { return fov_; }
 	void setFOV(float fov);
 
 protected:

@@ -17,7 +17,7 @@ public:
 	Box(float width, float height, float depth, glm::vec3 offset = glm::vec3(0));
 	virtual ~Box();
 
-	int getEntityType() const override { return EntTypes::CUBE; }
+	int getEntityType() const override { return EntTypes::BOX; }
 	FunctionalityFlags getFunctionalityFlags() const override { return FunctionalityFlags::DRAWABLE | FunctionalityFlags::UPDATABLE; }
 
 	void update(float dt) override;

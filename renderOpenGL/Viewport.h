@@ -4,6 +4,8 @@
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
+#include <string>
+
 class Camera;
 
 class Viewport
@@ -33,10 +35,17 @@ public:
 	long userData() { return m_userData; }
 	void setUserData(long data) { m_userData = data; }
 
+	std::string name() const { return name_; }
+
 protected:
 	long m_userData = 0;
 	glm::vec4 viewportArea;
 	Camera* pCamera = nullptr;
 	bool mEnabled = true;
 	glm::vec3 backgroundColor_;
+	std::string name_ {"unnamed"};
+
+	void setName(std::string name) { name_ = name; }
+
+	friend class Renderer;
 };

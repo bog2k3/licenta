@@ -12,7 +12,8 @@ namespace EntTypes {
 enum {
 	INVALID 				= 0,
 	STATICMESH				= 1,
-	CUBE					= 2,
+	BOX						= 2,
+	CAMERA_CTRL				= 3,
 };
 }
 

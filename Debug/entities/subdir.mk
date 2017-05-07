@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../entities/Box.cpp \
+../entities/CameraController.cpp \
 ../entities/Entity.cpp \
 ../entities/StaticMesh.cpp 
 
 OBJS += \
 ./entities/Box.o \
+./entities/CameraController.o \
 ./entities/Entity.o \
 ./entities/StaticMesh.o 
 
 CPP_DEPS += \
 ./entities/Box.d \
+./entities/CameraController.d \
 ./entities/Entity.d \
 ./entities/StaticMesh.d 
 

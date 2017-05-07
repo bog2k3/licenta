@@ -66,7 +66,7 @@ void Shape2D::render(Viewport* vp) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glBlendEquation(GL_BLEND_EQUATION_ALPHA);
 
-	glUniformMatrix4fv(indexMatViewport_, 1, GL_FALSE, glm::value_ptr(vp->camera()->getMatProjView()));
+	glUniformMatrix4fv(indexMatViewport_, 1, GL_FALSE, glm::value_ptr(vp->camera()->matProjView()));
 	glEnableVertexAttribArray(indexPos_);
 	glEnableVertexAttribArray(indexColor_);
 

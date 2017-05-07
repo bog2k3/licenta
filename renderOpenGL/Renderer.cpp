@@ -35,6 +35,7 @@ void Renderer::registerRenderable(IRenderable* r) {
 }
 
 void Renderer::addViewport(std::string name, std::unique_ptr<Viewport> vp) {
+	vp->setName(name);
 	viewports_[name] = std::move(vp);
 }
 
