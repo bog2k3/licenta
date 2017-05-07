@@ -125,8 +125,8 @@ void GLText::print(const std::string &text, ViewportCoord pos, int z, int size, 
 	float zf = -z * 0.01f;
 
 	// Fill buffers
-	positions_.push_back(pos);
-	verticesPerText_.push_back(length * 6);
+	itemPositions_.push_back(pos);
+	verticesPerItem_.push_back(length * 6);
 	int x = 0;
 	int y = 0;
 	int initialX = 0;
@@ -193,21 +193,21 @@ void GLText::render(Viewport* pCrtViewport) {
 	glUniform2fv(viewportHalfSizeID_, 1, &halfVP[0]);
 
 	// 1st attribute buffer : vertices
-	glEnableVertexAttribArray(vertexPosition_screenspaceID_);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID_);
 	glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(vertices_[0]), &vertices_[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(vertexPosition_screenspaceID_);
 	glVertexAttribPointer(vertexPosition_screenspaceID_, 3, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 
 	// 2nd attribute buffer : UVs
-	glEnableVertexAttribArray(vertexUVID_);
 	glBindBuffer(GL_ARRAY_BUFFER, UVBufferID_);
 	glBufferData(GL_ARRAY_BUFFER, UVs_.size() * sizeof(UVs_[0]), &UVs_[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(vertexUVID_);
 	glVertexAttribPointer(vertexUVID_, 2, GL_FLOAT, GL_FALSE, 0, (void*)0 );
 
 	// 3rd attribute buffer : vertex colors
-	glEnableVertexAttribArray(vertexColorID_);
 	glBindBuffer(GL_ARRAY_BUFFER, colorBufferID_);
 	glBufferData(GL_ARRAY_BUFFER, colors_.size() * sizeof(colors_[0]), &colors_[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(vertexColorID_);
 	glVertexAttribPointer(vertexColorID_, 4, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnable(GL_BLEND);
@@ -215,11 +215,11 @@ void GLText::render(Viewport* pCrtViewport) {
 
 	// do the drawing:
 	uint offset = 0;
-	for (uint i=0; i<positions_.size(); i++) {
-		glm::vec2 translate(positions_[i].x(pCrtViewport), positions_[i].y(pCrtViewport));
+	for (uint i=0; i<itemPositions_.size(); i++) {
+		glm::vec2 translate(itemPositions_[i].x(pCrtViewport), itemPositions_[i].y(pCrtViewport));
 		glUniform2fv(translationID_, 1, &translate[0]);
-		glDrawArrays(GL_TRIANGLES, offset, verticesPerText_[i] );
-		offset += verticesPerText_[i];
+		glDrawArrays(GL_TRIANGLES, offset, verticesPerItem_[i] );
+		offset += verticesPerItem_[i];
 	}
 
 	glDisable(GL_BLEND);
@@ -234,4 +234,6 @@ void GLText::purgeRenderQueue() {
 	vertices_.clear();
 	UVs_.clear();
 	colors_.clear();
+	itemPositions_.clear();
+	verticesPerItem_.clear();
 }
