@@ -45,16 +45,13 @@ public:
 		: anchor_(a), type_(callback), xc_(x), yc_(y) {
 	}
 
-	// creates a new coordinate representation translated by the given amount
-	// the values are interpreted according to the coordinate type
-	ViewportCoord adjust(float dx, float dy) const;
-	ViewportCoord adjust(glm::vec2 const& d) const;
+	//ViewportCoord(ViewportCoord const& c);
 
 	// creates a new coordinate representation scaled by a factor
 	ViewportCoord scale(float s) const;
 
-	ViewportCoord operator+(ViewportCoord const& x) const;
-	ViewportCoord operator-(ViewportCoord const& x) const;
+	ViewportCoord operator+(ViewportCoord x) const;
+	ViewportCoord operator-(ViewportCoord x) const;
 	ViewportCoord operator*(float s) const { return scale(s); }
 	ViewportCoord operator/(float s) const { return scale(1.f / s); }
 
@@ -65,6 +62,10 @@ public:
 	// compute the actual pixel value within a viewport:
 	float x(Viewport* vp) const;
 	float y(Viewport* vp) const;
+
+#ifdef DEBUG
+	void debugPrint();
+#endif
 
 private:
 	anchors anchor_ = (anchors)(left | top);
@@ -79,6 +80,10 @@ private:
 	}
 
 	std::vector<Adjustment> deferredAdjustments_;
+
+#ifdef DEBUG
+	void debugPrintInternal(int indent);
+#endif
 };
 
 struct Adjustment {
@@ -87,7 +92,7 @@ struct Adjustment {
 		scale
 	} type;
 	ViewportCoord value;
-	float weight;
+	float weightX, weightY;
 };
 
 #endif /* RENDEROPENGL_VIEWPORTCOORD_H_ */

@@ -11,6 +11,7 @@
 #include "../renderOpenGL/GLText.h"
 #include "../renderOpenGL/Viewport.h"
 #include "../math/math3D.h"
+#include "../utils/log.h"
 
 #include <sstream>
 #include <iomanip>
@@ -60,7 +61,6 @@ void SignalViewer::update(float dt) {
 }
 
 void SignalViewer::draw() {
-	constexpr float yDivisionSize = 20; // pixels
 	constexpr int maxYDivisions = 5;
 	constexpr float textSize = 14;
 	constexpr float spacePerChar = textSize/2; // pixels
@@ -100,33 +100,34 @@ void SignalViewer::draw() {
 		if (sMax < s.minUpperY_)
 			sMax = s.minUpperY_;
 		// draw samples:
-		ViewportCoord xAxisZoom = size_.x() / s.source_->getCapacity();
-		ViewportCoord yScale = size_.y() / (sMax - sMin);
-		if (sMin == sMax)
-			yScale = {0, 0};
-		ViewportCoord prev = pos + size_.y() * 0.5f;
+		ViewportCoord widthPerSample = size_.x() / s.source_->getCapacity();
+		ViewportCoord pixelsPerYUnit = {0, 0};
+		if (sMin != sMax)
+			pixelsPerYUnit = size_.y() / (sMax - sMin);
+		ViewportCoord prevVertex = pos + size_.y() * 0.5f;
 		for (unsigned i=0; i<s.source_->getNumSamples(); i++) {
-			ViewportCoord crt = prev.x() + xAxisZoom +
-					pos.y() + size_.y() - yScale * (s.source_->getSample(i)-sMin);
-			Shape2D::get()->drawLine(prev, crt, z_, s.color_);
-			prev = crt;
+			ViewportCoord crtVertex = prevVertex.x() + widthPerSample +
+					pos.y() + size_.y() - pixelsPerYUnit * (s.source_->getSample(i)-sMin);
+			Shape2D::get()->drawLine(prevVertex, crtVertex, z_, s.color_);
+			prevVertex = crtVertex;
 		}
 		// draw value axis division lines & labels
 		if (sMin * sMax < 0) {
 			// zero line is visible
-			auto zeroY = pos.y() + size_.y() + yScale*sMin;
+			auto zeroY = pos.y() + size_.y() + pixelsPerYUnit*sMin;
 			Shape2D::get()->drawLine(pos.x() + zeroY, pos.x() + size_.x() + zeroY, z_, frameColor);
 		}
 		int nYDivs = maxYDivisions; //min(maxYDivisions, (int)(size.y / yDivisionSize));
 		int nDecimals = s.source_->getNumSamples() ? -log10(sMax - sMin) : 0;
+		ViewportCoord yDivisionSize = size_.y() / nYDivs;
 		for (int i=1; i<nYDivs; i++) {
-			auto lineY = pos.y() + size_.y().adjust(0, -i * yDivisionSize);
+			auto lineY = pos.y() + size_.y() + yDivisionSize * (-i);
 			Shape2D::get()->drawLine(pos.x() + lineY, pos.x() + size_.x() + lineY, z_, divisionColor);
 			std::stringstream ss;
 			ss << std::setprecision(nDecimals) << sMin + (sMax-sMin) * i / nYDivs;
-			GLText::get()->print(ss.str(), pos.x().adjust((ss.str().size()+1) * spacePerChar, 5) + lineY, z_, textSize, divisionLabelColor);
+			GLText::get()->print(ss.str(), pos.x() - ViewportCoord{(ss.str().size()+1) * spacePerChar, -5} + lineY, z_, textSize, divisionLabelColor);
 		}
 
-		pos = pos + size_.y().adjust(0, 15);
+		pos = pos + size_.y() + ViewportCoord{0, 15};
 	}
 }

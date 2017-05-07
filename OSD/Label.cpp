@@ -24,9 +24,9 @@ void Label::draw() {
 		glm::vec2 rectSize = boxSize();
 		auto vsz = ViewportCoord(rectSize.x, rectSize.y);
 		Shape2D::get()->drawRectangle(
-				pos_.adjust(5, 5),
+				pos_ + ViewportCoord{5, 5},
 				z_,
-				vsz.adjust(5, 5),
+				vsz + ViewportCoord{5, 5},
 				color_);
 	}
 }

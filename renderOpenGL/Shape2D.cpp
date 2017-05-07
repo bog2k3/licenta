@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "shader.hpp"
 #include "../math/math3D.h"
+#include "../utils/log.h"
 
 #include <stdexcept>
 #include <glm/mat4x4.hpp>
@@ -87,7 +88,7 @@ void Shape2D::render(Viewport* vp) {
 	static std::vector<glm::vec4> colorBuf;
 	colorBuf.reserve(max(buffer_.size(), bufferTri_.size()));
 
-	// render viewport-space triangle primitives:
+	// render triangle primitives:
 	posBuf.clear();
 	colorBuf.clear();
 	for (auto &v : bufferTri_) {
@@ -98,7 +99,7 @@ void Shape2D::render(Viewport* vp) {
 	glVertexAttribPointer(indexColor_, 4, GL_FLOAT, GL_FALSE, 0, &colorBuf[0]);
 	glDrawElements(GL_TRIANGLES, indicesTri_.size(), GL_UNSIGNED_SHORT, &indicesTri_[0]);
 
-	// render vieport-space line primitives:
+	// render line primitives:
 	posBuf.clear();
 	colorBuf.clear();
 	for (auto &v : buffer_) {
@@ -229,7 +230,7 @@ void Shape2D::drawCircle(ViewportCoord pos, float radius, float z, int nSides, g
 	ViewportCoord *v = new ViewportCoord[nSides];
 	float phi = 0;
 	for (int i=0; i<nSides; i++) {
-		v[i] = pos.adjust(cosf(phi) * radius, sinf(phi) * radius);
+		v[i] = pos + ViewportCoord{cosf(phi) * radius, sinf(phi) * radius};
 		phi += phiStep;
 	}
 	drawPolygon(v, nSides, z, rgba);

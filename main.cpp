@@ -60,7 +60,6 @@ int main(int argc, char* argv[]) {
 	do {
 	#ifdef DEBUG
 		updatePaused = true;
-		skipRendering = false;
 	#endif
 
 		int windowW = 1024;
@@ -74,12 +73,6 @@ int main(int argc, char* argv[]) {
 		GLFWInput::onInputEvent.add(onInputEventHandler);
 
 		Renderer renderer(windowW, windowH);
-		//Viewport vp1(0, 0, windowW, windowH);
-		//vp1.getCamera()->moveTo({0, 0, -3});
-		//renderer.addViewport(&vp1);
-
-		//RenderContext renderContext(&vp1, shape2d, mesher, gltext);
-
 		World world;
 
 		randSeed(time(NULL));
@@ -99,9 +92,9 @@ int main(int argc, char* argv[]) {
 		updateList.add(World::getInstance());
 		updateList.add(&sigViewer);
 
-		float frameTime = 0;
-		sigViewer.addSignal("frameTime", &frameTime,
-				glm::vec3(1.f, 0.2f, 0.2f), 0.1f);
+		float frameRate = 0;
+		sigViewer.addSignal("frames/sec", &frameRate,
+				glm::vec3(1.f, 0.2f, 0.2f), 0.1f, 50, 30, 5);
 
 		SessionManager::init(world, renderer);
 		SessionManager::startSession(SessionManager::TEST_SESSION);
@@ -112,7 +105,8 @@ int main(int argc, char* argv[]) {
 		float t = glfwGetTime();
 		while (GLFWInput::checkInput()) {
 			float newTime = glfwGetTime();
-			frameTime = newTime - t;
+			float frameTime = newTime - t;
+			frameRate = 1.f / frameTime;
 			t = newTime;
 
 			// fixed time step for simulation (unless slowMo is on)
@@ -135,26 +129,11 @@ int main(int argc, char* argv[]) {
 					{20, 20, ViewportCoord::absolute, ViewportCoord::bottom | ViewportCoord::left},
 					0, 16, glm::vec3(0.2f, 0.4, 1.0f));
 
-			GLText::get()->print("Top-Left",
-					{5, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::left},
-					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
-			GLText::get()->print("Top-Right",
-					{10, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right},
-					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
-			GLText::get()->print("Bottom-Left",
-					{5, 5, ViewportCoord::percent, ViewportCoord::bottom| ViewportCoord::left},
-					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
-			GLText::get()->print("Bottom-Right",
-					{10, 5, ViewportCoord::percent, ViewportCoord::bottom | ViewportCoord::right},
-					0, 16, glm::vec3(0.6f, 0.8, 1.0f));
-
 			if (updatePaused) {
-				GLText::get()->print("PAUSED",
-						{1, 1, ViewportCoord::percent},
-						0, 32, glm::vec3(1.f, 0.8f, 0.2f));
+				GLText::get()->print("PAUSED", {45, 50, ViewportCoord::percent}, 0, 32, glm::vec3(1.f, 0.8f, 0.2f));
 			}
 			if (slowMo) {
-				GLText::get()->print("~~ Slow Motion ON ~~", {10, 45}, 0, 18, glm::vec3(1.f, 0.5f, 0.1f));
+				GLText::get()->print("~~ Slow Motion ON ~~", {40, 5, ViewportCoord::percent}, 0, 20, glm::vec3(1.f, 0.5f, 0.1f));
 			}
 
 			// do the actual openGL render for the previous frame (which is independent of our world)

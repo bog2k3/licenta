@@ -25,8 +25,8 @@ CPP_DEPS += \
 # Each subdirectory must supply rules for building sources it contributes
 utils/%.o: ../utils/%.cpp
 	@echo 'Building file: $<'
-	@echo 'Invoking: Cygwin C++ Compiler'
-	g++ -std=c++14 -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	@echo 'Invoking: Cross G++ Compiler'
+	g++ -std=c++14 -DGLM_FORCE_RADIANS -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

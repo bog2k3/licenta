@@ -21,11 +21,11 @@
 
 #define LOGPREFIX(PREF) logger_prefix logger_prefix_token(PREF);
 
-#define LOGIMPL(X) if (logger::instance().getLogStream()) {\
+#define LOGIMPL(X) {if (logger::instance().getLogStream()) {\
 	std::lock_guard<std::mutex> lk(logger::getLogMutex());\
 	logger::instance().writeprefix(*logger::instance().getLogStream());\
 	*logger::instance().getLogStream() << X;\
-}
+}}
 
 #ifdef DEBUG
 #define LOG(X) { LOGIMPL(X)\
@@ -47,7 +47,7 @@
 	*logger::instance().getLogStream() << X;\
 	}\
 }
-#define LOGLN(X) LOG(X << "\n")
+#define LOGLN(X) {LOG(X << "\n")}
 #define ERROR(X) {\
 	std::lock_guard<std::mutex> lk(logger::getErrMutex());\
 	for (auto stream : {&std::cerr, logger::instance().getErrStream()}) {\
