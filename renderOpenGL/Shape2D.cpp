@@ -37,7 +37,7 @@ Shape2D::Shape2D(Renderer* renderer)
 	: lineShaderProgram_(0)
 	, indexPos_(0)
 	, indexColor_(0)
-	, indexMatViewProj_(0)
+	, indexMatViewport_(0)
 {
 	renderer->registerRenderable(this);
 	lineShaderProgram_ = Shaders::createProgram("data/shaders/shape2d.vert", "data/shaders/shape2d.frag");
@@ -46,7 +46,7 @@ Shape2D::Shape2D(Renderer* renderer)
 	}
 	indexPos_ = glGetAttribLocation(lineShaderProgram_, "vPos");
 	indexColor_ = glGetAttribLocation(lineShaderProgram_, "vColor");
-	indexMatViewProj_ = glGetUniformLocation(lineShaderProgram_, "mViewProj");
+	indexMatViewport_ = glGetUniformLocation(lineShaderProgram_, "mViewportInverse");
 }
 
 Shape2D::~Shape2D() {
@@ -66,7 +66,7 @@ void Shape2D::render(Viewport* vp) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//glBlendEquation(GL_BLEND_EQUATION_ALPHA);
 
-	glUniformMatrix4fv(indexMatViewProj_, 1, GL_FALSE, glm::value_ptr(vp->camera()->getMatProjView()));
+	glUniformMatrix4fv(indexMatViewport_, 1, GL_FALSE, glm::value_ptr(vp->camera()->getMatProjView()));
 	glEnableVertexAttribArray(indexPos_);
 	glEnableVertexAttribArray(indexColor_);
 
@@ -78,7 +78,7 @@ void Shape2D::render(Viewport* vp) {
 	int vpw = vp->width(), vph = vp->height();
 	glm::mat4x4 matVP_to_Uniform(glm::translate(matVP_to_UniformScale,
 			glm::vec3(-vpw/2, -vph/2, 0)));
-	glUniformMatrix4fv(indexMatViewProj_, 1, GL_FALSE, glm::value_ptr(matVP_to_Uniform));
+	glUniformMatrix4fv(indexMatViewport_, 1, GL_FALSE, glm::value_ptr(matVP_to_Uniform));
 	glEnableVertexAttribArray(indexPos_);
 	glEnableVertexAttribArray(indexColor_);
 

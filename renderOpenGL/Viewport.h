@@ -34,9 +34,9 @@ public:
 	void setUserData(long data) { m_userData = data; }
 
 protected:
-	long m_userData;
+	long m_userData = 0;
 	glm::vec4 viewportArea;
-	Camera* pCamera;
-	bool mEnabled;
+	Camera* pCamera = nullptr;
+	bool mEnabled = true;
 	glm::vec3 backgroundColor_;
 };

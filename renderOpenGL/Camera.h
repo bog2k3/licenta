@@ -22,7 +22,8 @@ public:
 	const glm::mat4 getMatProjView() const { return matProj_ * matView_; }
 
 	glm::vec3 getPos() const;
-	void moveTo(glm::vec3 const& wWhere);
+	void moveTo(glm::vec3 const& where);
+	void lookAt(glm::vec3 const& where);
 	void transformView(glm::mat4 const& rTrans);
 	void setViewTransform(glm::mat4 aTrans);
 	float getFOV() const { return fov_; }

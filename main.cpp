@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
 		updateList.add(&sigViewer);
 
 		SessionManager::init(world, renderer);
-		SessionManager::startSession(SessionManager::TEST_SESSION);
+		SessionManager::startSession(SessionManager::TRANSFORM_SESSION);
 
 		// initial update:
 		updateList.update(0);

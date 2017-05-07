@@ -79,7 +79,7 @@ private:
 	unsigned lineShaderProgram_;
 	unsigned indexPos_;
 	unsigned indexColor_;
-	unsigned indexMatViewProj_;
+	unsigned indexMatViewport_;
 };
 
 #endif /* RENDEROPENGL_SHAPE2D_H_ */

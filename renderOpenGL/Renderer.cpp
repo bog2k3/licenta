@@ -13,6 +13,8 @@
 #include "../utils/DrawList.h"
 #include "../utils/assert.h"
 
+#include "GL/gl.h"
+
 #include <stdexcept>
 
 Renderer::~Renderer() {
@@ -62,6 +64,8 @@ void Renderer::render() {
 		for (auto &vp : viewports_) {
 			if (!vp.second->isEnabled())
 				continue;
+			auto vpp = vp.second->position();
+			glViewport(vpp.x, vpp.y, vp.second->width(), vp.second->height());
 			r->render(vp.second.get());
 		}
 		r->purgeRenderQueue();
