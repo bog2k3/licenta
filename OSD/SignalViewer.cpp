@@ -47,12 +47,12 @@ SignalViewer::SignalViewer(ViewportCoord pos, float z, ViewportCoord size)
 SignalViewer::~SignalViewer() {
 }
 
-void SignalViewer::addSignal(std::string const& name, float* pValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples, float minUpperY, float maxLowerY) {
-	addSignal(name, [pValue] { return *pValue; }, rgb, sampleInterval, maxSamples, minUpperY, maxLowerY);
+void SignalViewer::addSignal(std::string const& name, float* pValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples, float minUpperY, float maxLowerY, int displayPrecision) {
+	addSignal(name, [pValue] { return *pValue; }, rgb, sampleInterval, maxSamples, minUpperY, maxLowerY, displayPrecision);
 }
 
-void SignalViewer::addSignal(std::string const& name, std::function<float()> getValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples, float minUpperY, float maxLowerY) {
-	sourceInfo_.push_back(DataInfo(std::unique_ptr<SignalDataSource>(new SignalDataSource(getValue, maxSamples, sampleInterval)), name, rgb, minUpperY, maxLowerY));
+void SignalViewer::addSignal(std::string const& name, std::function<float()> getValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples, float minUpperY, float maxLowerY, int displayPrecision) {
+	sourceInfo_.push_back(DataInfo(std::unique_ptr<SignalDataSource>(new SignalDataSource(getValue, maxSamples, sampleInterval)), name, rgb, minUpperY, maxLowerY, displayPrecision));
 }
 
 void SignalViewer::update(float dt) {
@@ -62,7 +62,7 @@ void SignalViewer::update(float dt) {
 
 void SignalViewer::draw() {
 	constexpr int maxYDivisions = 5;
-	constexpr float textSize = 14;
+	constexpr float textSize = 16;
 	constexpr float spacePerChar = textSize/2; // pixels
 	const glm::vec4 frameColor(1.f, 1.f, 1.f, 0.3f);
 	const glm::vec4 divisionColor(1.f, 1.f, 1.f, 0.2f);
@@ -72,13 +72,6 @@ void SignalViewer::draw() {
 
 	for (auto &s : sourceInfo_) {
 		Shape2D::get()->drawRectangle(pos, z_, size_, frameColor);
-		std::stringstream stitle;
-		stitle << s.name_;
-		if (s.source_->getNumSamples())
-			stitle << " : " << s.source_->getSample(s.source_->getNumSamples()-1);
-		else
-			stitle << " (no values)";
-		GLText::get()->print(stitle.str(), pos, z_, textSize, s.color_);
 		float sMin = 1.e20f, sMax = -1.e20f;
 		// scan all samples and seek min/max values:
 		for (unsigned i=0; i<s.source_->getNumSamples(); i++) {
@@ -119,14 +112,24 @@ void SignalViewer::draw() {
 		}
 		int nYDivs = maxYDivisions; //min(maxYDivisions, (int)(size.y / yDivisionSize));
 		int nDecimals = s.source_->getNumSamples() ? -log10(sMax - sMin) : 0;
+		if (s.displayPrecision_ >= 0)
+			nDecimals = s.displayPrecision_;
 		ViewportCoord yDivisionSize = size_.y() / nYDivs;
 		for (int i=1; i<nYDivs; i++) {
 			auto lineY = pos.y() + size_.y() + yDivisionSize * (-i);
 			Shape2D::get()->drawLine(pos.x() + lineY, pos.x() + size_.x() + lineY, z_, divisionColor);
 			std::stringstream ss;
-			ss << std::setprecision(nDecimals) << sMin + (sMax-sMin) * i / nYDivs;
-			GLText::get()->print(ss.str(), pos.x() - ViewportCoord{(ss.str().size()+1) * spacePerChar, -5} + lineY, z_, textSize, divisionLabelColor);
+			ss << std::fixed << std::setprecision(nDecimals) << sMin + (sMax-sMin) * i / nYDivs;
+			GLText::get()->print(ss.str(), pos.x() - ViewportCoord{(ss.str().size()+1) * spacePerChar, -textSize/2} + lineY, z_, textSize, divisionLabelColor);
 		}
+		// draw title and current value:
+		std::stringstream stitle;
+		stitle << s.name_;
+		if (s.source_->getNumSamples())
+			stitle << " : " << std::fixed << std::setprecision(nDecimals) << s.source_->getSample(s.source_->getNumSamples()-1);
+		else
+			stitle << " (no values)";
+		GLText::get()->print(stitle.str(), pos, z_, textSize, s.color_);
 
 		pos = pos + size_.y() + ViewportCoord{0, 15};
 	}

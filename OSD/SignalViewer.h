@@ -30,25 +30,28 @@ public:
 		float lastMaxValue_ = 0.f;
 		float minUpperY_ = -1e20f;
 		float maxLowerY_ = 1e20f;
+		int displayPrecision_ = -1;
 
 		DataInfo() = default;
 		DataInfo(DataInfo &&x) = default;
-		DataInfo(std::unique_ptr<SignalDataSource> && source, std::string const& name, glm::vec3 const& color, float minUpperY, float maxLowerY)
+		DataInfo(std::unique_ptr<SignalDataSource> && source, std::string const& name, glm::vec3 const& color, float minUpperY, float maxLowerY, int displayPrecision)
 			: source_(std::move(source)), name_(name), color_(color),
-			  minUpperY_(minUpperY), maxLowerY_(maxLowerY) {
+			  minUpperY_(minUpperY), maxLowerY_(maxLowerY), displayPrecision_(displayPrecision) {
 		}
 	};
 
 	SignalViewer(ViewportCoord pos, float z, ViewportCoord size);
 	virtual ~SignalViewer();
 
-	void addSignal(std::string const& name, float* pValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f);
-	void addSignal(std::string const& name, std::function<float()> getValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f);
+	// displayPrecision < 0 means auto. n>=0 means max n decimal places
+
+	void addSignal(std::string const& name, float* pValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f, int displayPrecision = -1);
+	void addSignal(std::string const& name, std::function<float()> getValue, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f, int displayPrecision = -1);
 
 	template <class Callable,
 		typename std::enable_if<std::is_same<typename std::result_of<Callable()>::type, float>::value>::type>
-	void addSignal(std::string const& name, Callable c, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f) {
-		addSignal(name, [c]() { return c(); }, rgb, sampleInterval, maxSamples, minUpperY, maxLowerY);
+	void addSignal(std::string const& name, Callable c, glm::vec3 const& rgb, float sampleInterval, int maxSamples = 50, float minUpperY = -1e20f, float maxLowerY = 1e20f, int displayPrecision = -1) {
+		addSignal(name, [c]() { return c(); }, rgb, sampleInterval, maxSamples, minUpperY, maxLowerY, displayPrecision);
 	}
 
 	void update(float dt);

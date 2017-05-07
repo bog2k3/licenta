@@ -81,6 +81,9 @@ int main(int argc, char* argv[]) {
 				ViewportCoord(20, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
 				ViewportCoord(15, 10, ViewportCoord::percent));
 
+		float frameRate = 0;
+		sigViewer.addSignal("frames/sec", &frameRate, glm::vec3(1.f, 0.2f, 0.2f), 0.1f, 50, 30, 5, 0);
+
 		DrawList drawList;
 		drawList.add(World::getInstance());
 		drawList.add(&sigViewer);
@@ -91,10 +94,6 @@ int main(int argc, char* argv[]) {
 		UpdateList updateList;
 		updateList.add(World::getInstance());
 		updateList.add(&sigViewer);
-
-		float frameRate = 0;
-		sigViewer.addSignal("frames/sec", &frameRate,
-				glm::vec3(1.f, 0.2f, 0.2f), 0.1f, 50, 30, 5);
 
 		SessionManager::init(world, renderer);
 		SessionManager::startSession(SessionManager::TEST_SESSION);
