@@ -37,7 +37,6 @@ void Camera::moveTo(glm::vec3 const& where) {
 void Camera::lookAt(glm::vec3 const& where) {
 	glm::vec3 pos = position();
 	matView_ = glm::lookAtLH(pos, where, {0, 1, 0});
-	moveTo(pos);
 }
 
 void Camera::updateProj() {
