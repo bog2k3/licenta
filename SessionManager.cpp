@@ -60,6 +60,7 @@ void SessionManager::createTransformSession() {
 	// viewport 1
 	auto vp = std::make_unique<Viewport>(0, hh-5, hw-5, hh-5);
 	vp->camera()->moveTo({0, 0, -3});
+	//vp->camera()->setOrtho({-3, -3 / vp->aspect(), 6, 6 / vp->aspect()});
 	vpm_->addViewport("translation", std::move(vp));
 	// viewport 2
 	vp = std::make_unique<Viewport>(hw+5, hh-5, hw-5, hh-5);

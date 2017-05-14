@@ -33,6 +33,12 @@ void Camera::setFOV(float fov) {
 	updateProj();
 }
 
+void Camera::setOrtho(glm::vec4 rc) {
+	ortho_ = rc;
+	fov_ = 0;
+	updateProj();
+}
+
 void Camera::moveTo(glm::vec3 const& where) {
 	position_ = where;
 	updateView();
@@ -50,6 +56,12 @@ void Camera::updateView() {
 void Camera::updateProj() {
 	float zNear = 0.5f;
 	float zFar = 50.f;
-	matProj_ = glm::perspectiveFovLH(fov_, (float)pViewport_->width(), (float)pViewport_->height(), zNear, zFar);
+	if (fov_ == 0) {
+		// set ortho
+		matProj_ = glm::orthoLH(ortho_.x, ortho_.x + ortho_.z, ortho_.y, ortho_.y+ortho_.w, zNear, zFar);
+	} else {
+		// set perspective
+		matProj_ = glm::perspectiveFovLH(fov_, (float)pViewport_->width(), (float)pViewport_->height(), zNear, zFar);
+	}
 }
 

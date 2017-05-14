@@ -19,6 +19,7 @@ public:
 	Camera* camera() const { return pCamera; }
 	int width() const { return viewportArea.z; }
 	int height() const { return viewportArea.w; }
+	float aspect() const { return (float)width() / height(); }
 	glm::vec2 position() const { return glm::vec2(viewportArea.x, viewportArea.y); }
 	bool isEnabled() const { return mEnabled; }
 	bool containsPoint(glm::vec2 const&p) const;

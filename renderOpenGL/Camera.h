@@ -9,6 +9,7 @@
 #define RENDEROPENGL_CAMERA_H_
 
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
 
 class Viewport;
@@ -30,6 +31,8 @@ public:
 	void setViewTransform(glm::mat4 aTrans);
 	float FOV() const { return fov_; }
 	void setFOV(float fov);
+	void setOrtho(glm::vec4 rect); // sets ortho projection - x,y=pos, z,w=size
+	glm::vec4 getOrthoRect() const { return ortho_; }
 
 protected:
 	Viewport* pViewport_;
@@ -38,6 +41,7 @@ protected:
 	glm::mat4 matProj_;
 	glm::vec3 position_;
 	glm::vec3 direction_;
+	glm::vec4 ortho_;
 
 	void updateView();
 	void updateProj();
