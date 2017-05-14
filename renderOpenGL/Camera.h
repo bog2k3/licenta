@@ -22,8 +22,8 @@ public:
 	const glm::mat4& matProj() const { return matProj_; }
 	const glm::mat4 matProjView() const { return matProj_ * matView_; }
 
-	glm::vec3 position() const;
-	glm::vec3 direction() const;
+	glm::vec3 position() const { return position_; }
+	glm::vec3 direction() const { return direction_; }
 	void moveTo(glm::vec3 const& where);
 	void lookAt(glm::vec3 const& where);
 	void transformView(glm::mat4 const& rTrans);
@@ -36,7 +36,10 @@ protected:
 	float fov_;
 	glm::mat4 matView_;
 	glm::mat4 matProj_;
+	glm::vec3 position_;
+	glm::vec3 direction_;
 
+	void updateView();
 	void updateProj();
 
 	friend class Viewport;

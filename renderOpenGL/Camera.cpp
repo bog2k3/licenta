@@ -8,6 +8,9 @@
 #include "Camera.h"
 #include "Viewport.h"
 #include "../math/math3D.h"
+
+#include "../utils/log.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 
@@ -16,6 +19,8 @@ Camera::Camera(Viewport* vp)
 	, fov_(PI/2)
 	, matView_(1)
 	, matProj_(1)
+	, position_(0)
+	, direction_(0, 0, 1)
 {
 	updateProj();
 }
@@ -29,14 +34,17 @@ void Camera::setFOV(float fov) {
 }
 
 void Camera::moveTo(glm::vec3 const& where) {
-	matView_[3][0] = -where.x;
-	matView_[3][1] = -where.y;
-	matView_[3][2] = -where.z;
+	position_ = where;
+	updateView();
 }
 
 void Camera::lookAt(glm::vec3 const& where) {
-	glm::vec3 pos = position();
-	matView_ = glm::lookAtLH(pos, where, {0, 1, 0});
+	direction_ = glm::normalize(where - position_);
+	updateView();
+}
+
+void Camera::updateView() {
+	matView_ = glm::lookAtLH(position_, position_ + direction_, {0, 1, 0});
 }
 
 void Camera::updateProj() {
@@ -45,14 +53,3 @@ void Camera::updateProj() {
 	matProj_ = glm::perspectiveFovLH(fov_, (float)pViewport_->width(), (float)pViewport_->height(), zNear, zFar);
 }
 
-glm::vec3 Camera::position() const {
-	return {
-		-matView_[3][0], -matView_[3][1], -matView_[3][2]
-	};
-}
-
-glm::vec3 Camera::direction() const {
-	return {
-		matView_[0][2], matView_[1][2], matView_[2][2]
-	};
-}

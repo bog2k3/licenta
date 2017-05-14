@@ -24,7 +24,7 @@ void CameraController::update(float dt) {
 			path_[pathIndex_].type == pathNode::jump ||
 			path_[pathIndex_].type == pathNode::redirect) {
 		// reached the next vertex
-		if (pathIndex_ == path_.size() - 1) {
+		if ((unsigned)pathIndex_ == path_.size() - 1) {
 			path_.clear(); // finished the path
 			return;
 		}
