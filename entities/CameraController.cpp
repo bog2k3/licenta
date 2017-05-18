@@ -20,35 +20,28 @@ void CameraController::update(float dt) {
 	if (path_.empty())
 		return;
 
-	if (lerpFactor_ >= 1 ||
-			path_[pathIndex_].type == pathNode::jump ||
-			path_[pathIndex_].type == pathNode::redirect) {
+	if (lerpFactor_ >= 1) {
 		// reached the next vertex
-		if (pathIndex_ == path_.size() - 1) {
+		if (pathIndex_ > 0 && (unsigned)pathIndex_ == path_.size()) {
 			path_.clear(); // finished the path
 			return;
 		}
 
-		if (path_[pathIndex_].type == pathNode::jump) {
-			jumpNext_ = true;
-		}
+		jumpNext_ = path_[pathIndex_].type == pathNode::jump;
 		if (path_[pathIndex_].type == pathNode::jump ||
 				path_[pathIndex_].type == pathNode::redirect) {
 			pathIndex_ = clamp(path_[pathIndex_].targetIndex, 0u, (unsigned)path_.size() - 1);
-			if (path_[pathIndex_].type != pathNode::vertex)
-				return;
-			if (!jumpNext_)
-				lerpFactor_ = 0;
+			return;
 		}
 		if (jumpNext_) {
+			jumpNext_ = false;
 			camera_->moveTo(path_[pathIndex_].position);
 			lastLookAt_ = path_[pathIndex_].lookAtTarget;
 			camera_->lookAt(lastLookAt_);
-			jumpNext_ = false;
+			pathIndex_++;
 			return;
 		}
 
-		pathIndex_++;
 		lerpFactor_ = 0;
 		auto &next = path_[pathIndex_];
 		origin_ = camera_->position();
@@ -72,6 +65,8 @@ void CameraController::update(float dt) {
 	camera_->moveTo(pos);
 	camera_->lookAt(target);
 	lastLookAt_ = target;
+	if (lerpFactor_ >= 1)
+		pathIndex_++;
 }
 
 void CameraController::startBackAndForth(glm::vec3 p1, glm::vec3 p2, glm::vec3 lookAtTarget, float speed) {

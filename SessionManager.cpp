@@ -85,6 +85,11 @@ void SessionManager::createTransformSession() {
 
 	auto camCtrl = std::make_unique<CameraController>(vpm_->getViewport("rotation")->camera());
 	camCtrl->startBackAndForth({-3, 0, -3}, {3, 0, -3}, {0, 0, 0}, 2.f);
+	camCtrl->startPath({
+		{CameraController::pathNode::vertex, {-3, 0, -3}, {-3, 0, -3}, 0},	//#0
+		{CameraController::pathNode::vertex, {3, 0, 3}, {3, 0, 3}, 0},	//#1
+		{CameraController::pathNode::redirect, {0,0,0}, {0,0,0}, 0}	// -> #0
+	}, 2.f);
 	wld_->takeOwnershipOf(std::move(camCtrl));
 }
 
