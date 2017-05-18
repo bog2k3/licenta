@@ -58,7 +58,7 @@ void Camera::updateProj() {
 	float zFar = 50.f;
 	if (fov_ == 0) {
 		// set ortho
-		matProj_ = glm::orthoLH(ortho_.x, ortho_.x + ortho_.z, ortho_.y, ortho_.y+ortho_.w, zNear, zFar);
+		matProj_ = glm::ortho(ortho_.x, ortho_.x + ortho_.z, ortho_.y, ortho_.y+ortho_.w, zNear, zFar);
 	} else {
 		// set perspective
 		matProj_ = glm::perspectiveFovLH(fov_, (float)pViewport_->width(), (float)pViewport_->height(), zNear, zFar);

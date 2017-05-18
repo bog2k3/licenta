@@ -61,6 +61,18 @@ void Renderer::deleteViewport(std::string const& name) {
 }
 
 void Renderer::render() {
+	// first clear viewports:
+	for (auto &vp : viewports_) {
+		if (!vp.second->isEnabled())
+			continue;
+		auto vpp = vp.second->position();
+		glViewport(vpp.x, vpp.y, vp.second->width(), vp.second->height());
+		glClearColor(vp.second->backgroundColor_.r, vp.second->backgroundColor_.g, vp.second->backgroundColor_.b, 0);
+		glScissor(vpp.x, vpp.y, vp.second->width(), vp.second->height());
+		glEnable(GL_SCISSOR_TEST);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		glDisable(GL_SCISSOR_TEST);
+	}
 	for (auto r : renderComponents_) {
 		for (auto &vp : viewports_) {
 			if (!vp.second->isEnabled())

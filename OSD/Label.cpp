@@ -6,12 +6,13 @@
 #include "../renderOpenGL/Shape2D.h"
 #include "../math/math3D.h"
 
-Label::Label(std::string value, ViewportCoord pos, float z, float textSize, glm::vec3 color)
+Label::Label(std::string value, ViewportCoord pos, float z, float textSize, glm::vec3 color, std::set<std::string> viewportFilters)
 	: pos_(pos)
 	, z_(z)
 	, color_(color)
 	, textSize_(textSize)
-	, value_(value) {
+	, value_(value)
+	, viewportFilters_(viewportFilters) {
 }
 
 glm::vec2 Label::boxSize() const {
@@ -19,8 +20,8 @@ glm::vec2 Label::boxSize() const {
 }
 
 void Label::draw() {
-	GLText::get()->print(value_, pos_, z_, textSize_, color_);
-	if (drawFrame_) {
+	GLText::get()->print(value_, pos_, z_, textSize_, color_, viewportFilters_);
+	if (drawFrame) {
 		glm::vec2 rectSize = boxSize();
 		auto vsz = ViewportCoord(rectSize.x, rectSize.y);
 		Shape2D::get()->drawRectangle(

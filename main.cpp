@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 		randSeed(time(NULL));
 
 		SignalViewer sigViewer(
-				ViewportCoord(20, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
-				ViewportCoord(15, 10, ViewportCoord::percent));
+				ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
+				ViewportCoord(25, 15, ViewportCoord::percent));
 
 		float frameRate = 0;
 		sigViewer.addSignal("frames/sec", &frameRate, glm::vec3(1.f, 0.2f, 0.2f), 0.1f, 50, 30, 5, 0);
@@ -124,9 +124,9 @@ int main(int argc, char* argv[]) {
 			// build the render queue for the current frame
 			drawList.draw();
 
-			GLText::get()->print("Transformari 3D - Ionita Bogdan Florin",
-					{20, 20, ViewportCoord::absolute, ViewportCoord::bottom | ViewportCoord::left},
-					0, 16, glm::vec3(0.2f, 0.4, 1.0f));
+//			GLText::get()->print("Transformari 3D - Ionita Bogdan Florin",
+//					{20, 20, ViewportCoord::absolute, ViewportCoord::bottom | ViewportCoord::left},
+//					0, 16, glm::vec3(0.2f, 0.4, 1.0f));
 
 			if (updatePaused) {
 				GLText::get()->print("PAUSED", {45, 50, ViewportCoord::percent}, 0, 32, glm::vec3(1.f, 0.8f, 0.2f));

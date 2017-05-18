@@ -10,6 +10,7 @@
 
 #include "IRenderable.h"
 #include <string>
+#include <set>
 #include <vector>
 #include <glm/vec2.hpp>
 #include <glm/vec4.hpp>
@@ -24,9 +25,9 @@ public:
 	static void init(Renderer* renderer, const char * texturePath, int rows, int cols, char firstChar, int defaultSize);
 
 	// z is between [0..100] (bottom to top)
-	void print(const std::string &text, ViewportCoord pos, int z, int size, glm::vec3 const& color);
+	void print(const std::string &text, ViewportCoord pos, int z, int size, glm::vec3 const& color, std::set<std::string> viewportFilter = {});
 	// z is between [0..100] (bottom to top)
-	void print(const std::string &text, ViewportCoord pos, int z, int size, glm::vec4 const& color);
+	void print(const std::string &text, ViewportCoord pos, int z, int size, glm::vec4 const& color, std::set<std::string> viewportFilter = {});
 
 	glm::vec2 getTextRect(std::string const& text, int fontSize);
 
@@ -55,6 +56,7 @@ private:
 	std::vector<glm::vec2> UVs_;
 	std::vector<glm::vec4> colors_;
 	std::vector<ViewportCoord> itemPositions_;
+	std::vector<std::set<std::string>> viewportFilters_;
 	std::vector<int> verticesPerItem_;
 };
 

@@ -17,7 +17,7 @@ CameraController::~CameraController() {
 }
 
 void CameraController::update(float dt) {
-	if (path_.empty())
+	/*if (path_.empty())
 		return;
 
 	if (lerpFactor_ >= 1) {
@@ -50,7 +50,7 @@ void CameraController::update(float dt) {
 		maxLerpSpeed_ = cruiseSpeed_ / segmentLength_;
 	}
 
-	if (lerpFactor_ < lerpSpeed_ * 0.5f) { // less than half second left
+	if (lerpFactor_ > 0.9f) { // nearing the end
 		// slow down
 		float delta = maxLerpSpeed_ * 0.5f * dt;
 		if (lerpSpeed_ > delta)
@@ -66,18 +66,23 @@ void CameraController::update(float dt) {
 	camera_->lookAt(target);
 	lastLookAt_ = target;
 	if (lerpFactor_ >= 1)
-		pathIndex_++;
+		pathIndex_++;*/
+
+	pathLerper_.update(dt);
+	camera_->moveTo(pathLerper_.value().position);
+	camera_->lookAt(pathLerper_.value().lookAtTarget);
 }
 
 void CameraController::startBackAndForth(glm::vec3 p1, glm::vec3 p2, glm::vec3 lookAtTarget, float speed) {
-	startPath({
-		{pathNode::vertex, p1, lookAtTarget, 0},	//#0
-		{pathNode::vertex, p2, lookAtTarget, 0},	//#1
-		{pathNode::redirect, {0,0,0}, {0,0,0}, 0}	// -> #0
-	}, speed);
+	pathLerper_.setPath({
+		PathNode<CameraNode>{PathNodeType::vertex, {p1, lookAtTarget}, 0},	//#0
+		PathNode<CameraNode>{PathNodeType::vertex, {p2, lookAtTarget}, 0},	//#1
+		PathNode<CameraNode>{PathNodeType::redirect, {{0,0,0}, {0,0,0}}, 0}	// -> #0
+	});
+	pathLerper_.start(speed);
 }
 
-void CameraController::startPath(std::vector<pathNode> path, float speed) {
+/*void CameraController::startPath(std::vector<pathNode> path, float speed) {
 	path_ = path;
 	cruiseSpeed_ = speed;
 	pathIndex_ = 0;
@@ -88,5 +93,5 @@ void CameraController::startPath(std::vector<pathNode> path, float speed) {
 	lerpFactor_ = 0;
 	maxLerpSpeed_ = cruiseSpeed_ / segmentLength_;
 	lerpSpeed_ = 0;
-}
+}*/
 

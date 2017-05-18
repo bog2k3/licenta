@@ -14,6 +14,7 @@ enum {
 	STATICMESH				= 1,
 	BOX						= 2,
 	CAMERA_CTRL				= 3,
+	Label					= 4,
 };
 }
 
