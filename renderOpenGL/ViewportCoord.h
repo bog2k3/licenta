@@ -2,7 +2,7 @@
  * ViewportCoord.h
  *
  *  Created on: May 6, 2017
- *      Author: alexandra
+ *      Author: bogdan
  */
 
 #ifndef RENDEROPENGL_VIEWPORTCOORD_H_

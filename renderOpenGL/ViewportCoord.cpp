@@ -2,7 +2,7 @@
  * ViewportCoord.cpp
  *
  *  Created on: May 6, 2017
- *      Author: alexandra
+ *      Author: bogdan
  */
 
 #include "ViewportCoord.h"

@@ -12,13 +12,14 @@
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include <set>
+
 namespace physics {
 
 class DynamicBody {
 public:
 
 	enum class TransformSpace {
-		Local,
 		Parent,
 		World,
 		Custom,
@@ -39,7 +40,19 @@ public:
 	glm::fquat getAngularSpeed(TransformSpace space) const;
 	glm::fquat getAngularAcceleration(TransformSpace space) const;
 
+	void setPosition(glm::vec3 pos, TransformSpace space);
+	void setOrientation(glm::fquat o, TransformSpace space);
+
 	void applyForce(TransformSpace space, glm::vec3 offset, glm::vec3 forceVector);
+
+private:
+	DynamicBody* parent_ = nullptr;
+	std::set<DynamicBody*> children_;
+	glm::mat4 matFrame_ {1}; // frame transformation from model space to parent space
+	mutable glm::mat4 matWorldCache_ {1}; // cached world space transformation
+	mutable bool wldTransformDirty_ = false;
+
+	glm::mat4 worldTransform() const;
 };
 
 } /* namespace physics */
