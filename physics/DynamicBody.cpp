@@ -94,7 +94,7 @@ void DynamicBody::setPosition(glm::vec3 pos, TransformSpace space) {
 	case TransformSpace::Parent:
 		break;
 	case TransformSpace::World:
-		// transform pos from world into parent
+		// transform pos from world into parents
 		if (parent_) {
 			auto mInv = glm::inverse(parent_->worldTransform());
 			pos = glm::vec3{mInv * glm::vec4{pos, 1}};

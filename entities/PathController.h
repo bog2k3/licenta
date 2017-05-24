@@ -33,7 +33,7 @@ public:
 			return d == 0 ? 1.f : d;
 		}
 		Vertex operator*(float f) const {
-			return {position * f, orientation * f};
+			return {position * f, glm::fquat{orientation.x, orientation.y, orientation.z, orientation.w * f}};
 		}
 	};
 
