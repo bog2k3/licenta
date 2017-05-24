@@ -6,13 +6,30 @@
  */
 
 #include "PathController.h"
+#include "../physics/DynamicBody.h"
 
-PathController::PathController() {
-	// TODO Auto-generated constructor stub
-
+PathController::PathController(physics::DynamicBody *body)
+	: body_(body) {
 }
 
 PathController::~PathController() {
-	// TODO Auto-generated destructor stub
+
 }
 
+void PathController::addVertex(Vertex v) {
+	lerper_.appendNode(v);
+}
+
+void PathController::addRedirect(int index) {
+	lerper_.appendRedirect(index);
+}
+
+void PathController::start(float speed) {
+	lerper_.start(speed, 0);
+}
+
+void PathController::update(float dt) {
+	lerper_.update(dt);
+	body_->setPosition(lerper_.value().position, physics::DynamicBody::TransformSpace::Parent);
+	body_->setOrientation(lerper_.value().orientation, physics::DynamicBody::TransformSpace::Parent);
+}

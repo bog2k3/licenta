@@ -15,6 +15,7 @@ enum {
 	BOX						= 2,
 	CAMERA_CTRL				= 3,
 	Label					= 4,
+	PATH_CONTROLLER			= 5,
 };
 }
 

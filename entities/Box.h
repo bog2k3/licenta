@@ -23,6 +23,8 @@ public:
 	void update(float dt) override;
 	void draw() override;
 
+	physics::DynamicBody* body() { return &body_; }
+
 private:
 	Mesh mesh_;
 	physics::DynamicBody body_;

@@ -10,6 +10,7 @@
 #include "entities/Box.h"
 #include "entities/CameraController.h"
 #include "entities/LabelEntity.h"
+#include "entities/PathController.h"
 #include "renderOpenGL/IViewportManager.h"
 #include "renderOpenGL/Viewport.h"
 #include "renderOpenGL/ViewportCoord.h"
@@ -85,7 +86,15 @@ void SessionManager::createTransformSession() {
 	vpm_->addViewport("combined", std::move(vp));
 
 	// create entities
-	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, +1.f, 0.f)));
+	auto box1 = std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, +1.f, 0.f));
+	auto pc = std::make_unique<PathController>(box1->body());
+	wld_->takeOwnershipOf(std::move(box1));
+	pc->addVertex({{-1, 1, 0}, glm::fquat()});
+	pc->addVertex({{+1, 1, 0}, glm::fquat()});
+	pc->addRedirect(0);
+	pc->start(2.f);
+	wld_->takeOwnershipOf(std::move(pc));
+
 	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, +1.f, 0.f)));
 	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(-1.f, -1.f, 0.f)));
 	wld_->takeOwnershipOf(std::make_unique<Box>(1, 1, 1, glm::vec3(+1.f, -1.f, 0.f)));

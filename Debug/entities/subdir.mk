@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../entities/CameraController.cpp \
 ../entities/Entity.cpp \
 ../entities/LabelEntity.cpp \
+../entities/PathController.cpp \
 ../entities/StaticMesh.cpp 
 
 OBJS += \
@@ -15,6 +16,7 @@ OBJS += \
 ./entities/CameraController.o \
 ./entities/Entity.o \
 ./entities/LabelEntity.o \
+./entities/PathController.o \
 ./entities/StaticMesh.o 
 
 CPP_DEPS += \
@@ -22,6 +24,7 @@ CPP_DEPS += \
 ./entities/CameraController.d \
 ./entities/Entity.d \
 ./entities/LabelEntity.d \
+./entities/PathController.d \
 ./entities/StaticMesh.d 
 
 

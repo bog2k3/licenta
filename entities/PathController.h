@@ -9,13 +9,16 @@
 #define PHYSICS_PATHCONTROLLER_H_
 
 #include "Entity.h"
+#include "../utils/path-lerper.h"
 
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+namespace physics {
 class DynamicBody;
+}
 
-class PathController : public EntityController {
+class PathController : public Entity {
 public:
 
 	struct Vertex {
@@ -29,15 +32,26 @@ public:
 			float d = (position - x.position).length();
 			return d == 0 ? 1.f : d;
 		}
+		Vertex operator*(float f) const {
+			return {position * f, orientation * f};
+		}
 	};
 
-	PathController(DynamicBody *body);
+	int getEntityType() const override { return EntTypes::PATH_CONTROLLER; }
+	FunctionalityFlags getFunctionalityFlags() const { return FunctionalityFlags::UPDATABLE; }
+
+	PathController(physics::DynamicBody *body);
 	virtual ~PathController();
 
 	void addVertex(Vertex v);
+	void addRedirect(int index);
 	void start(float speed);
 
 	void update(float dt);
+
+private:
+	PathLerper<Vertex> lerper_;
+	physics::DynamicBody* body_;
 };
 
 #endif /* PHYSICS_PATHCONTROLLER_H_ */
