@@ -16,7 +16,7 @@
 
 Camera::Camera(Viewport* vp)
 	: pViewport_(vp)
-	, fov_(PI/2)
+	, fov_(PI/3)
 	, matView_(1)
 	, matProj_(1)
 	, position_(0)

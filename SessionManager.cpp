@@ -120,11 +120,11 @@ void SessionManager::createTransformSession() {
 	auto box4 = std::make_unique<Box>(1, 1, 1);
 	pc = std::make_unique<PathController>(box4->body());
 	wld_->takeOwnershipOf(std::move(box4));
-//	pc->addVertex({glm::vec3{0}, glm::angleAxis(0.f, glm::vec3{0, 1, 0})});
-//	pc->addVertex({glm::vec3{0}, glm::angleAxis(180.f, glm::vec3{0, 1, 0})});
-//	pc->addRedirect(0);
-//	pc->start(2.f);
-//	wld_->takeOwnershipOf(std::move(pc));
+	pc->addVertex({glm::vec3{2, 0, -4}, glm::angleAxis(180.f, glm::vec3{1, 0, 0}), glm::vec3(1.f, 0.5f, 0.3f)});
+	pc->addVertex({glm::vec3{-2, 0, -4}, glm::angleAxis(180.f, glm::vec3{0, 1, 0}), glm::vec3(1.f, 2.0f, 1.3f)});
+	pc->addRedirect(0);
+	pc->start(2.f);
+	wld_->takeOwnershipOf(std::move(pc));
 
 	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Translatii", 22,
 			ViewportCoord{10, 10, ViewportCoord::absolute, ViewportCoord::left | ViewportCoord::bottom}, 0,
