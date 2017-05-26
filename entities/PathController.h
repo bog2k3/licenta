@@ -25,15 +25,16 @@ public:
 		glm::vec3 position;
 		glm::fquat orientation;
 
-		Vertex operator+(Vertex x) const {
-			return {position + x.position, orientation + x.orientation};
-		}
 		float operator-(Vertex x) const {
 			float d = (position - x.position).length();
 			return d == 0 ? 1.f : d;
 		}
-		Vertex operator*(float f) const {
-			return {position * f, glm::fquat{orientation.x, orientation.y, orientation.z, orientation.w * f}};
+
+		static Vertex lerp(Vertex const& v1, Vertex const& v2, float f) {
+			return Vertex {
+				v1.position * f + v2.position * (1-f),
+				glm::slerp(v1.orientation, v2.orientation, f)
+			};
 		}
 	};
 
@@ -50,7 +51,7 @@ public:
 	void update(float dt);
 
 private:
-	PathLerper<Vertex> lerper_;
+	PathLerper<Vertex, decltype(PathController::Vertex::lerp)> lerper_{Vertex::lerp};
 	physics::DynamicBody* body_;
 };
 
