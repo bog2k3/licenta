@@ -39,19 +39,30 @@ public:
 	glm::fquat getOrientation(TransformSpace space) const;
 	glm::fquat getAngularSpeed(TransformSpace space) const;
 	glm::fquat getAngularAcceleration(TransformSpace space) const;
+	glm::vec3 scale() const { return transform_.scale_; }
 
 	void setPosition(glm::vec3 pos, TransformSpace space);
 	void setOrientation(glm::fquat o, TransformSpace space);
+	void setScale(float scale);
+	void setScale(glm::vec3 scale);
 
 	void applyForce(TransformSpace space, glm::vec3 offset, glm::vec3 forceVector);
 
 private:
 	DynamicBody* parent_ = nullptr;
 	std::set<DynamicBody*> children_;
-	glm::mat4 matFrame_ {1}; // frame transformation from model space to parent space
+	struct {
+		glm::vec3 position_ {0};
+		glm::fquat orientation_ {};
+		glm::vec3 scale_ {1.f};
+	} transform_; // transformation from model space to parent space
+
+	mutable glm::mat4 matFrameCache_ {1}; // cached frame transformation from model space to parent space
 	mutable glm::mat4 matWorldCache_ {1}; // cached world space transformation
+	mutable bool frameTransformDirty_ = false;
 	mutable bool wldTransformDirty_ = false;
 
+	void computeFrameTransform() const;
 	glm::mat4 worldTransform() const;
 };
 

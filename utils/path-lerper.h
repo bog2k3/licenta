@@ -130,13 +130,13 @@ template<class NodeValue,
 	class DistanceFunction>
 void PathLerper<NodeValue, LerpFunction, DistanceFunction>::start(float speed, unsigned initial) {
 	cruiseSpeed_ = speed;
-	pathIndex_ = 0;
-	origin_ = path_[0].value;
+	pathIndex_ = initial;
+	origin_ = path_[pathIndex_].value;
 	last_ = origin_;
-	segmentLength_ = distFn_(path_[0].value, path_[1].value);
-	lerpFactor_ = 0;
+	segmentLength_ = 0.f;
+	lerpFactor_ = 0.99f;
 	maxLerpSpeed_ = cruiseSpeed_ / segmentLength_;
-	lerpSpeed_ = 0;
+	lerpSpeed_ = 1;
 }
 
 template<class NodeValue,

@@ -82,7 +82,7 @@ void Mesh::createBox(glm::vec3 center, float width, float height, float depth) {
 		},
 		// #10 front bottom left
 		{
-			{right, bottom, front}, nFront, {1, 1}, white
+			{left, bottom, front}, nFront, {1, 1}, white
 		},
 		// #11 front bottom right
 		{

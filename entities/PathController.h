@@ -24,16 +24,33 @@ public:
 	struct Vertex {
 		glm::vec3 position;
 		glm::fquat orientation;
+		glm::vec3 scale;
+
+		Vertex(glm::vec3 pos = glm::vec3{0}, glm::fquat orientation = glm::fquat{}, glm::vec3 scale = glm::vec3{1, 1, 1})
+			: position(pos), orientation(orientation), scale(scale) {
+		}
 
 		float operator-(Vertex x) const {
 			float d = (position - x.position).length();
-			return d == 0 ? 1.f : d;
+			if (d == 0) {
+				float dr = 2 * acos(glm::cross(x.orientation, glm::inverse(orientation)).w);
+				if (dr == 0) {
+					if (x.scale == scale)
+						return 1;
+					else
+						return (x.scale - scale).length();
+				}
+				else
+					return dr;
+			} else
+				return d;
 		}
 
 		static Vertex lerp(Vertex const& v1, Vertex const& v2, float f) {
 			return Vertex {
-				v1.position * f + v2.position * (1-f),
-				glm::slerp(v1.orientation, v2.orientation, f)
+				v1.position * (1-f) + v2.position * f,
+				glm::slerp(v1.orientation, v2.orientation, f),
+				v1.scale * (1-f) + v2.scale * f
 			};
 		}
 	};
@@ -51,7 +68,7 @@ public:
 	void update(float dt);
 
 private:
-	PathLerper<Vertex, decltype(PathController::Vertex::lerp)> lerper_{Vertex::lerp};
+	PathLerper<Vertex, decltype(&PathController::Vertex::lerp)> lerper_{Vertex::lerp};
 	physics::DynamicBody* body_;
 };
 

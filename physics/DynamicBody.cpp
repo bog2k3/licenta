@@ -8,6 +8,7 @@
 #include "DynamicBody.h"
 
 #include <glm/gtc/matrix_inverse.hpp>
+#include <glm/gtx/transform.hpp>
 
 using namespace physics;
 
@@ -22,7 +23,9 @@ DynamicBody::~DynamicBody() {
 glm::mat4 DynamicBody::getTransformation(TransformSpace space, const glm::mat4* customSpace) const {
 	switch (space) {
 	case TransformSpace::Parent:
-		return matFrame_;
+		if (frameTransformDirty_)
+			computeFrameTransform();
+		return matFrameCache_;
 	case TransformSpace::World:
 		return worldTransform();
 	case TransformSpace::Custom:
@@ -36,21 +39,22 @@ glm::mat4 DynamicBody::getTransformation(TransformSpace space, const glm::mat4* 
 
 glm::mat4 DynamicBody::worldTransform() const {
 	if (wldTransformDirty_) {
+		if (frameTransformDirty_)
+			computeFrameTransform();
 		if (parent_)
-			matWorldCache_ = parent_->worldTransform() * matFrame_;
+			matWorldCache_ = parent_->worldTransform() * matFrameCache_;
 		else
-			matWorldCache_ = matFrame_;
+			matWorldCache_ = matFrameCache_;
 		wldTransformDirty_ = false;
 	}
 	return matWorldCache_;
 }
 
 glm::vec3 DynamicBody::getPosition(TransformSpace space) const {
-	auto w = matFrame_;
 	if (space == TransformSpace::World) {
-		w = worldTransform();
+		return glm::vec3(worldTransform()[3]);
 	}
-	return {w[3][0], w[3][1], w[3][2]};
+	return transform_.position_;
 }
 
 glm::vec3 DynamicBody::getSpeed(TransformSpace space) const {
@@ -64,7 +68,7 @@ glm::vec3 DynamicBody::getAcceleration(TransformSpace space) const {
 glm::fquat DynamicBody::getOrientation(TransformSpace space) const {
 	switch (space) {
 	case TransformSpace::Parent:
-		return glm::quat_cast(matFrame_);
+		return transform_.orientation_;
 	case TransformSpace::World:
 		return glm::quat_cast(worldTransform());
 	default:
@@ -103,8 +107,8 @@ void DynamicBody::setPosition(glm::vec3 pos, TransformSpace space) {
 	default:
 		assert(!"invalid space");
 	}
-	matFrame_[3] = glm::vec4{pos, 1};
-	wldTransformDirty_ = true;
+	transform_.position_ = pos;
+	frameTransformDirty_ = wldTransformDirty_ = true;
 }
 
 void DynamicBody::setOrientation(glm::fquat o, TransformSpace space) {
@@ -121,8 +125,21 @@ void DynamicBody::setOrientation(glm::fquat o, TransformSpace space) {
 	default:
 		assert(!"invalid space");
 	}
-	auto pos = getPosition(TransformSpace::Parent);
-	matFrame_ = glm::mat4_cast(o);
-	matFrame_[3] = glm::vec4{pos, 1};
-	wldTransformDirty_ = true;
+	transform_.orientation_ = o;
+	frameTransformDirty_ = wldTransformDirty_ = true;
+}
+
+void DynamicBody::computeFrameTransform() const {
+	matFrameCache_ = glm::scale(transform_.scale_) * glm::mat4_cast(transform_.orientation_);
+	matFrameCache_[3] = {transform_.position_, 1};
+	frameTransformDirty_ = false;
+}
+
+void DynamicBody::setScale(glm::vec3 s) {
+	transform_.scale_ = s;
+	frameTransformDirty_ = wldTransformDirty_ = true;
+}
+
+void DynamicBody::setScale(float s) {
+	setScale({s ,s ,s });
 }

@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 	#endif
 
 		int windowW = 1024;
-		int windowH = 768;
+		int windowH = 720;
 
 		// initialize stuff:
 		if (!gltInit(windowW, windowH, "Transformari 3D - Ionita Bogdan"))

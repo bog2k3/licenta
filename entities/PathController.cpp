@@ -32,4 +32,5 @@ void PathController::update(float dt) {
 	lerper_.update(dt);
 	body_->setPosition(lerper_.value().position, physics::DynamicBody::TransformSpace::Parent);
 	body_->setOrientation(lerper_.value().orientation, physics::DynamicBody::TransformSpace::Parent);
+	body_->setScale(lerper_.value().scale);
 }
