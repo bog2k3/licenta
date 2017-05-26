@@ -7,6 +7,8 @@
 
 #include "DynamicBody.h"
 
+#include <glm/gtc/matrix_inverse.hpp>
+
 using namespace physics;
 
 DynamicBody::DynamicBody() {
@@ -92,16 +94,16 @@ void DynamicBody::setPosition(glm::vec3 pos, TransformSpace space) {
 	case TransformSpace::Parent:
 		break;
 	case TransformSpace::World:
-		// transform pos from world into parent
+		// transform pos from world into parents
 		if (parent_) {
 			auto mInv = glm::inverse(parent_->worldTransform());
-			pos = mInv * glm::vec4{pos, 1};
+			pos = glm::vec3{mInv * glm::vec4{pos, 1}};
 		}
 		break;
 	default:
 		assert(!"invalid space");
 	}
-	matFrame_[3] = {pos, 1};
+	matFrame_[3] = glm::vec4{pos, 1};
 	wldTransformDirty_ = true;
 }
 
@@ -121,6 +123,6 @@ void DynamicBody::setOrientation(glm::fquat o, TransformSpace space) {
 	}
 	auto pos = getPosition(TransformSpace::Parent);
 	matFrame_ = glm::mat4_cast(o);
-	matFrame_[3] = {pos, 1};
+	matFrame_[3] = glm::vec4{pos, 1};
 	wldTransformDirty_ = true;
 }
