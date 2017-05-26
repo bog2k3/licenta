@@ -20,8 +20,8 @@ enum class PathNodeType {
 template<class NodeValue>
 struct PathNode {
 	PathNodeType type;		// type of node from above ^
-	NodeValue value;	// your custom value goes here
-	unsigned targetIndex; // for jump or redirect
+	NodeValue value;		// your custom value goes here
+	unsigned targetIndex; 	// for jump or redirect
 };
 
 template<class NodeValue>
