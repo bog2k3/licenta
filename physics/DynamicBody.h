@@ -64,6 +64,8 @@ private:
 
 	void computeFrameTransform() const;
 	glm::mat4 worldTransform() const;
+
+	void removeChild(DynamicBody* c);
 };
 
 } /* namespace physics */

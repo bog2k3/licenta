@@ -130,7 +130,7 @@ void DynamicBody::setOrientation(glm::fquat o, TransformSpace space) {
 }
 
 void DynamicBody::computeFrameTransform() const {
-	matFrameCache_ = glm::scale(transform_.scale_) * glm::mat4_cast(transform_.orientation_);
+	matFrameCache_ = glm::mat4_cast(transform_.orientation_) * glm::scale(transform_.scale_);
 	matFrameCache_[3] = {transform_.position_, 1};
 	frameTransformDirty_ = false;
 }
@@ -142,4 +142,21 @@ void DynamicBody::setScale(glm::vec3 s) {
 
 void DynamicBody::setScale(float s) {
 	setScale({s ,s ,s });
+}
+
+void DynamicBody::setParent(DynamicBody* parent) {
+	if (parent_) {
+		// first remove from old parent
+		parent_->removeChild(this);
+	}
+	parent_ = parent;
+	if (parent_)
+		parent_->children_.insert(this);
+	wldTransformDirty_ = true;
+}
+
+void DynamicBody::removeChild(DynamicBody* c) {
+	auto it = children_.find(c);
+	if (it != children_.end())
+		children_.erase(it);
 }
