@@ -49,7 +49,7 @@ public:
 		static Vertex lerp(Vertex const& v1, Vertex const& v2, float f) {
 			return Vertex {
 				v1.position * (1-f) + v2.position * f,
-				glm::slerp(v1.orientation, v2.orientation, f),
+				glm::mix(v1.orientation, v2.orientation, f),
 				v1.scale * (1-f) + v2.scale * f
 			};
 		}

@@ -66,6 +66,14 @@
 #define ERROR(X)
 #endif
 
+#ifdef DEBUG
+#define DEBUGLOG LOG
+#define DEBUGLOGLN LOGLN
+#else
+#define DEBUGLOG(X)
+#define DEBUGLOGLN(X)
+#endif
+
 #ifdef _ENABLE_LOGGING_
 
 class logger {
