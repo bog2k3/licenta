@@ -1,12 +1,12 @@
 #pragma once
 
-#include <glm/vec3.hpp>
-#include <glm/geometric.hpp>
-#include <utility>
 #include "constants.h"
 #include "../utils/assert.h"
 
-#include <ostream>
+#include <glm/vec3.hpp>
+#include <glm/geometric.hpp>
+
+#include <utility>
 
 template<typename T> constexpr T sqr(T const &x) { return x*x; }
 template<typename T> inline void xchg(T &x1, T &x2) { T aux(x1); x1 = x2; x2 = aux; }
@@ -17,14 +17,6 @@ template<typename T> constexpr T sign(T const& x) { return x > 0 ? T(+1) : (x < 
 template<typename T> constexpr T abs(T const& x) { return x < 0 ? -x : x; }
 
 //inline glm::vec3 getNormalVector(glm::vec3 triangle[]) { return glm::vec2(-v.y, v.x); }
-
-inline std::ostream& operator <<(std::ostream& str, glm::vec3 const& v) {
-	return str << "{" << v.x << ", " << v.y << ", " << v.z << "}";
-}
-
-inline std::ostream& operator <<(std::ostream& str, glm::vec2 const& v) {
-	return str << "{" << v.x << ", " << v.y << "}";
-}
 
 float constexpr eqEps(float f1, float f2) { return abs(f1 - f2) < EPS; }
 float constexpr eqEps(float f1, float f2, float eps) { return abs(f1 - f2) < eps; }

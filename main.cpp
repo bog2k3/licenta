@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
 			t = newTime;
 
 			// fixed time step for simulation (unless slowMo is on)
-			float simDT = updatePaused ? 0 : frameTime;
+			float simDT = updatePaused ? 0 : std::min(frameTime, 1.f / 20); // don't let the dt increase below 20 FPS
 			if (slowMo) {
 				simDT *= 0.1f;
 			}

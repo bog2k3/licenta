@@ -185,7 +185,7 @@ void PathLerper<NodeValue, LerpFunction, DistanceFunction>::update(float dt) {
 		// speed up
 		lerpSpeed_ += maxLerpSpeed_ * 0.5f * dt;
 	}
-	lerpFactor_ += lerpSpeed_ * dt;
+	lerpFactor_ += dt; //lerpSpeed_ * dt;
 	last_ = lerpFn_(origin_, path_[pathIndex_].value, clamp(lerpFactor_, 0.f, 1.f));
 	if (lerpFactor_ >= 1) {
 		DEBUGLOGLN("finished segment " << pathIndex_);

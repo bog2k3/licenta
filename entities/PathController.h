@@ -10,6 +10,7 @@
 
 #include "Entity.h"
 #include "../utils/path-lerper.h"
+#include "../utils/glmstream.h"
 
 #include <glm/vec3.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -47,9 +48,10 @@ public:
 		}
 
 		static Vertex lerp(Vertex const& v1, Vertex const& v2, float f) {
+			DEBUGLOGLN("mix f=" << f << "  v1=" << v1.orientation << "  v2=" << v2.orientation << "  res= " << glm::slerp(v1.orientation, v2.orientation, f));
 			return Vertex {
 				v1.position * (1-f) + v2.position * f,
-				glm::mix(v1.orientation, v2.orientation, f),
+				glm::slerp(v1.orientation, v2.orientation, f),
 				v1.scale * (1-f) + v2.scale * f
 			};
 		}
