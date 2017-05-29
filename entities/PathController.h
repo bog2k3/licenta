@@ -48,7 +48,7 @@ public:
 		}
 
 		static Vertex lerp(Vertex const& v1, Vertex const& v2, float f) {
-			DEBUGLOGLN("mix f=" << f << "  v1=" << v1.orientation << "  v2=" << v2.orientation << "  res= " << glm::slerp(v1.orientation, v2.orientation, f));
+//			DEBUGLOGLN("mix f=" << f << "  v1=" << v1.orientation << "  v2=" << v2.orientation << "  res= " << glm::slerp(v1.orientation, v2.orientation, f));
 			return Vertex {
 				v1.position * (1-f) + v2.position * f,
 				glm::slerp(v1.orientation, v2.orientation, f),

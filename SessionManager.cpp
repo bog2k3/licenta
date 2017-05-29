@@ -95,15 +95,14 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({{-3, 0, +1}, glm::fquat()});
 	pc->addRedirect(0);
 	pc->start(1.5f);
-//	wld_->takeOwnershipOf(std::move(pc));
+	wld_->takeOwnershipOf(std::move(pc));
 
 	auto box2 = std::make_unique<Box>(1, 1, 1);
 	pc = std::make_unique<PathController>(box2->body());
 	wld_->takeOwnershipOf(std::move(box2));
 	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(0.f, glm::vec3{0, 1, 0})});
-	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(120.f, glm::vec3{0, 1, 0})});
-	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(240.f, glm::vec3{0, 1, 0})});
-//	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(360.f, glm::vec3{0, 1, 0})});
+	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(PI/1.5f, glm::vec3{0, 1, 0})});
+	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(2*PI/1.5f, glm::vec3{0, 1, 0})});
 	pc->addRedirect(0);
 	pc->start(2.5f);
 	wld_->takeOwnershipOf(std::move(pc));
@@ -115,7 +114,7 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({glm::vec3{3, 0, 0}, glm::fquat{}, glm::vec3{1, 2.5f, 1}});
 	pc->addRedirect(0);
 	pc->start(2.2f);
-//	wld_->takeOwnershipOf(std::move(pc));
+	wld_->takeOwnershipOf(std::move(pc));
 
 	auto box4 = std::make_unique<Box>(1, 1, 1);
 	auto box5 = std::make_unique<Box>(0.5f, 0.5f, 0.5f);
@@ -128,7 +127,7 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({glm::vec3{-1.f, 0.5f, -1.f}, glm::angleAxis(-240.f, glm::vec3{0, 1, 0})});
 	pc->addRedirect(0);
 	pc->start(2.4f);
-//	wld_->takeOwnershipOf(std::move(pc));
+	wld_->takeOwnershipOf(std::move(pc));
 
 	pc = std::make_unique<PathController>(box4->body());
 	wld_->takeOwnershipOf(std::move(box4));
@@ -136,7 +135,7 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({glm::vec3{0, 0, -8.f}, glm::angleAxis(180.f, glm::vec3{0, 1, 0}), glm::vec3{2.5f, 1, 1}});
 	pc->addRedirect(0);
 	pc->start(1.8f);
-//	wld_->takeOwnershipOf(std::move(pc));
+	wld_->takeOwnershipOf(std::move(pc));
 
 	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Translatii", 22,
 			ViewportCoord{10, 10, ViewportCoord::absolute, ViewportCoord::left | ViewportCoord::bottom}, 0,
