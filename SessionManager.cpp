@@ -148,11 +148,18 @@ void SessionManager::createTransformSession() {
 	pc = std::make_unique<PathController>(box5->body());
 	wld_->takeOwnershipOf(std::move(box5));
 	pc->addVertex({glm::vec3{-1.f, 0.5f, -1.f}, glm::fquat{}});
-	pc->addVertex({glm::vec3{-1.f, 0.5f, -1.f}, glm::angleAxis(-160.f, glm::vec3{0, 1, 0})});
-	pc->addVertex({glm::vec3{-1.f, 0.5f, -1.f}, glm::angleAxis(-240.f, glm::vec3{0, 1, 0})});
+	pc->addVertex({glm::vec3{-1.f, 0.5f, -1.f}, glm::angleAxis(-160.f, glm::vec3{1, 0, 0})});
+	pc->addVertex({glm::vec3{-1.f, 0.5f, -1.f}, glm::angleAxis(-240.f, glm::vec3{1, 0, 0})});
 	pc->addRedirect(0);
 	pc->start(2.4f);
+	auto sv4 = std::make_unique<SigViewerEntity>(
+			ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
+			ViewportCoord(25, 15, ViewportCoord::percent), std::set<std::string>{"combined"});
+	auto pcp5 = pc.get();
 	wld_->takeOwnershipOf(std::move(pc));
+	sv4->get().addSignal("rot. int.",
+			[pcp5]() -> float { return (pcp5->value() - pcp5->vertex(0)) * 180 / PI; },
+			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 360, 0, 0);
 
 	pc = std::make_unique<PathController>(box4->body());
 	wld_->takeOwnershipOf(std::move(box4));
@@ -160,15 +167,23 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({glm::vec3{0, 0, -8.f}, glm::angleAxis(180.f, glm::vec3{0, 1, 0}), glm::vec3{2.5f, 1, 1}});
 	pc->addRedirect(0);
 	pc->start(1.8f);
+	auto pcp4 = pc.get();
 	wld_->takeOwnershipOf(std::move(pc));
+	sv4->get().addSignal("rot. ext.",
+			[pcp4]() -> float { return (pcp4->value() - pcp4->vertex(0)) * 180 / PI; },
+			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 360, 0, 0);
+	sv4->get().addSignal("scal ext.",
+			[pcp4]() -> float { return pcp4->value().scale.x; },
+			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 3, 0, 2);
+	wld_->takeOwnershipOf(std::move(sv4));
 
-	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Translatii", 22,
+	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Translatie", 22,
 			ViewportCoord{10, 10, ViewportCoord::absolute, ViewportCoord::left | ViewportCoord::bottom}, 0,
 			glm::vec3{1, 1, 1}, std::set<std::string>{"translation"}));
-	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Rotatii", 22,
+	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Rotatie", 22,
 			ViewportCoord{10, 10, ViewportCoord::absolute, ViewportCoord::left | ViewportCoord::bottom}, 0,
 			glm::vec3{1, 1, 1}, std::set<std::string>{"rotation"}));
-	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Scalari", 22,
+	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Scalare", 22,
 			ViewportCoord{10, 10, ViewportCoord::absolute, ViewportCoord::left | ViewportCoord::bottom}, 0,
 			glm::vec3{1, 1, 1}, std::set<std::string>{"scale"}));
 	wld_->takeOwnershipOf(std::make_unique<LabelEntity>("Combinate", 22,

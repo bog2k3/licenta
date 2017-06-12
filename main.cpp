@@ -77,24 +77,14 @@ int main(int argc, char* argv[]) {
 
 		randSeed(time(NULL));
 
-		float frameRate = 0;
-		/*SignalViewer sigViewer(
-				ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
-				ViewportCoord(25, 15, ViewportCoord::percent));
-
-		sigViewer.addSignal("frames/sec", &frameRate, glm::vec3(1.f, 0.2f, 0.2f), 0.1f, 50, 30, 5, 0);
-		*/
-
 		DrawList drawList;
 		drawList.add(World::getInstance());
-		//drawList.add(&sigViewer);
 		drawList.add(&EntityLabeler::getInstance());
 
 		UpdateList continuousUpdateList;
 
 		UpdateList updateList;
 		updateList.add(World::getInstance());
-		//updateList.add(&sigViewer);
 
 		SessionManager::init(world, renderer);
 		SessionManager::startSession(SessionManager::TRANSFORM_SESSION);
@@ -106,7 +96,6 @@ int main(int argc, char* argv[]) {
 		while (GLFWInput::checkInput()) {
 			float newTime = glfwGetTime();
 			float frameTime = newTime - t;
-			frameRate = 1.f / frameTime;
 			t = newTime;
 
 			// fixed time step for simulation (unless slowMo is on)

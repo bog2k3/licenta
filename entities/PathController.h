@@ -37,7 +37,7 @@ public:
 				float dr = 2 * acos(glm::cross(x.orientation, glm::inverse(orientation)).w);
 				if (dr == 0) {
 					if (x.scale == scale)
-						return 1;
+						return 0;
 					else
 						return glm::length(x.scale - scale);
 				}
