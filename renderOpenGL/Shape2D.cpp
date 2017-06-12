@@ -108,7 +108,7 @@ void Shape2D::render(Viewport* vp) {
 	}
 	glVertexAttribPointer(indexPos_, 3, GL_FLOAT, GL_FALSE, 0, &posBuf[0]);
 	glVertexAttribPointer(indexColor_, 4, GL_FLOAT, GL_FALSE, 0, &colorBuf[0]);
-	for (unsigned i=0; i<viewportFiltersLine_.size()-1; i++) {
+	for (unsigned i=0; i<viewportFiltersLine_.size(); i++) {
 		if (viewportFiltersLine_[i].empty()
 				|| viewportFiltersLine_[i].find(vp->name()) != viewportFiltersLine_[i].end()) {
 			glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, &indices_[i*2]);
@@ -173,9 +173,10 @@ void Shape2D::drawPolygon(ViewportCoord verts[], int nVerts, float z, glm::vec4 
 	for (int i=0; i<nVerts; i++) {
 		buffer_.push_back({verts[i], z, rgba});
 		indices_.push_back(buffer_.size()-1);
-		if (i > 0)
+		if (i > 0) {
 			indices_.push_back(buffer_.size()-1);
-		viewportFiltersLine_.push_back(viewportFilter);
+			viewportFiltersLine_.push_back(viewportFilter);
+		}
 	}
 	indices_.push_back(buffer_.size()-nVerts);
 	viewportFiltersLine_.push_back(viewportFilter);

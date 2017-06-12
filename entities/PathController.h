@@ -32,14 +32,14 @@ public:
 		}
 
 		float operator-(Vertex x) const {
-			float d = (position - x.position).length();
-			if (d == 0) {
+			float d = glm::length(position - x.position);
+			if (abs(d) < 1.e-5f) {
 				float dr = 2 * acos(glm::cross(x.orientation, glm::inverse(orientation)).w);
 				if (dr == 0) {
 					if (x.scale == scale)
 						return 1;
 					else
-						return (x.scale - scale).length();
+						return glm::length(x.scale - scale);
 				}
 				else
 					return dr;

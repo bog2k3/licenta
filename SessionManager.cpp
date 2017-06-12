@@ -99,10 +99,10 @@ void SessionManager::createTransformSession() {
 	auto sv1 = std::make_unique<SigViewerEntity>(
 			ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
 			ViewportCoord(25, 15, ViewportCoord::percent), std::set<std::string>{"translation"});
-	auto pcp = pc.get();
+	auto pcp1 = pc.get();
 	wld_->takeOwnershipOf(std::move(pc));
 	sv1->get().addSignal("translatie",
-			[pcp]() -> float { return (pcp->value().position - pcp->vertex(0).position).z; },
+			[pcp1]() -> float { return (pcp1->value().position - pcp1->vertex(0).position).z; },
 			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 1.5f, -1.5f, 2);
 	wld_->takeOwnershipOf(std::move(sv1));
 
@@ -114,7 +114,15 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({glm::vec3{0.f, 0.f, 3.f}, glm::angleAxis(2*PI/1.5f, glm::vec3{0, 1, 0})});
 	pc->addRedirect(0);
 	pc->start(2.5f);
+	auto sv2 = std::make_unique<SigViewerEntity>(
+			ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
+			ViewportCoord(25, 15, ViewportCoord::percent), std::set<std::string>{"rotation"});
+	auto pcp2 = pc.get();
 	wld_->takeOwnershipOf(std::move(pc));
+	sv2->get().addSignal("rotatie",
+			[pcp2]() -> float { return (pcp2->value() - pcp2->vertex(0)) * 180 / PI; },
+			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 360, 0, 0);
+	wld_->takeOwnershipOf(std::move(sv2));
 
 	auto box3 = std::make_unique<Box>(1, 1, 1);
 	pc = std::make_unique<PathController>(box3->body());
@@ -123,7 +131,15 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({glm::vec3{3, 0, 0}, glm::fquat{}, glm::vec3{1, 2.5f, 1}});
 	pc->addRedirect(0);
 	pc->start(2.2f);
+	auto sv3 = std::make_unique<SigViewerEntity>(
+			ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
+			ViewportCoord(25, 15, ViewportCoord::percent), std::set<std::string>{"scale"});
+	auto pcp3 = pc.get();
 	wld_->takeOwnershipOf(std::move(pc));
+	sv3->get().addSignal("scalare",
+			[pcp3]() -> float { return pcp3->value().scale.y; },
+			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 3, 0, 2);
+	wld_->takeOwnershipOf(std::move(sv3));
 
 	auto box4 = std::make_unique<Box>(1, 1, 1);
 	auto box5 = std::make_unique<Box>(0.5f, 0.5f, 0.5f);
