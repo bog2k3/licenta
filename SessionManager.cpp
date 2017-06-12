@@ -11,6 +11,7 @@
 #include "entities/CameraController.h"
 #include "entities/LabelEntity.h"
 #include "entities/PathController.h"
+#include "entities/SigViewerEntity.h"
 #include "renderOpenGL/IViewportManager.h"
 #include "renderOpenGL/Viewport.h"
 #include "renderOpenGL/ViewportCoord.h"
@@ -95,7 +96,15 @@ void SessionManager::createTransformSession() {
 	pc->addVertex({{-3, 0, +1}, glm::fquat()});
 	pc->addRedirect(0);
 	pc->start(1.5f);
+	auto sv1 = std::make_unique<SigViewerEntity>(
+			ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
+			ViewportCoord(25, 15, ViewportCoord::percent), std::set<std::string>{"translation"});
+	auto pcp = pc.get();
 	wld_->takeOwnershipOf(std::move(pc));
+	sv1->get().addSignal("translatie",
+			[pcp]() -> float { return (pcp->value().position - pcp->vertex(0).position).z; },
+			glm::vec3(1.f, 0.2f, 0.2f), 0.05f, 50, 1.5f, -1.5f, 2);
+	wld_->takeOwnershipOf(std::move(sv1));
 
 	auto box2 = std::make_unique<Box>(1, 1, 1);
 	pc = std::make_unique<PathController>(box2->body());

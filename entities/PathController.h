@@ -69,6 +69,9 @@ public:
 
 	void update(float dt);
 
+	Vertex value() const { return lerper_.value(); }
+	Vertex vertex(int index) const { return lerper_.vertex(index); }
+
 private:
 	PathLerper<Vertex, decltype(&PathController::Vertex::lerp)> lerper_{Vertex::lerp};
 	physics::DynamicBody* body_;

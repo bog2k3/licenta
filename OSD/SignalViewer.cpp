@@ -121,7 +121,7 @@ void SignalViewer::draw() {
 			Shape2D::get()->drawLine(pos.x() + lineY, pos.x() + size_.x() + lineY, z_, divisionColor, viewportFilter_);
 			std::stringstream ss;
 			ss << std::fixed << std::setprecision(nDecimals) << sMin + (sMax-sMin) * i / nYDivs;
-			GLText::get()->print(ss.str(), pos.x() - ViewportCoord{(ss.str().size()+1) * spacePerChar, -textSize/2} + lineY, z_, textSize, divisionLabelColor);
+			GLText::get()->print(ss.str(), pos.x() - ViewportCoord{(ss.str().size()+1) * spacePerChar, -textSize/2} + lineY, z_, textSize, divisionLabelColor, viewportFilter_);
 		}
 		// draw title and current value:
 		std::stringstream stitle;
@@ -130,7 +130,7 @@ void SignalViewer::draw() {
 			stitle << " : " << std::fixed << std::setprecision(nDecimals) << s.source_->getSample(s.source_->getNumSamples()-1);
 		else
 			stitle << " (no values)";
-		GLText::get()->print(stitle.str(), pos, z_, textSize, s.color_);
+		GLText::get()->print(stitle.str(), pos, z_, textSize, s.color_, viewportFilter_);
 
 		pos = pos + size_.y() + ViewportCoord{0, 15};
 	}

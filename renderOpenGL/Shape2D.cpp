@@ -108,7 +108,7 @@ void Shape2D::render(Viewport* vp) {
 	}
 	glVertexAttribPointer(indexPos_, 3, GL_FLOAT, GL_FALSE, 0, &posBuf[0]);
 	glVertexAttribPointer(indexColor_, 4, GL_FLOAT, GL_FALSE, 0, &colorBuf[0]);
-	for (unsigned i=0; i<viewportFiltersLine_. size(); i++) {
+	for (unsigned i=0; i<viewportFiltersLine_.size()-1; i++) {
 		if (viewportFiltersLine_[i].empty()
 				|| viewportFiltersLine_[i].find(vp->name()) != viewportFiltersLine_[i].end()) {
 			glDrawElements(GL_LINES, 2, GL_UNSIGNED_SHORT, &indices_[i*2]);
@@ -123,6 +123,8 @@ void Shape2D::purgeRenderQueue() {
 	indices_.clear();
 	bufferTri_.clear();
 	indicesTri_.clear();
+	viewportFiltersLine_.clear();
+	viewportFiltersTri_.clear();
 }
 
 void Shape2D::drawLine(ViewportCoord point1, ViewportCoord point2, float z, glm::vec3 rgb, std::set<std::string> viewportFilter) {

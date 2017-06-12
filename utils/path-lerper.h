@@ -53,6 +53,7 @@ public:
 	void update(float dt);
 
 	NodeValue value() const { return last_; }
+	NodeValue vertex(int i) const { return path_[i].value; }
 
 private:
 	std::vector<PathNode<NodeValue>> path_;

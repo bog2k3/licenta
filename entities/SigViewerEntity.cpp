@@ -19,3 +19,7 @@ void SigViewerEntity::draw() {
 	sigViewer_->draw();
 }
 
+void SigViewerEntity::update(float dt) {
+	sigViewer_->update(dt);
+}
+

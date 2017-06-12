@@ -77,23 +77,24 @@ int main(int argc, char* argv[]) {
 
 		randSeed(time(NULL));
 
-		SignalViewer sigViewer(
+		float frameRate = 0;
+		/*SignalViewer sigViewer(
 				ViewportCoord(27, 5, ViewportCoord::percent, ViewportCoord::top | ViewportCoord::right), 1.f,
 				ViewportCoord(25, 15, ViewportCoord::percent));
 
-		float frameRate = 0;
 		sigViewer.addSignal("frames/sec", &frameRate, glm::vec3(1.f, 0.2f, 0.2f), 0.1f, 50, 30, 5, 0);
+		*/
 
 		DrawList drawList;
 		drawList.add(World::getInstance());
-		drawList.add(&sigViewer);
+		//drawList.add(&sigViewer);
 		drawList.add(&EntityLabeler::getInstance());
 
 		UpdateList continuousUpdateList;
 
 		UpdateList updateList;
 		updateList.add(World::getInstance());
-		updateList.add(&sigViewer);
+		//updateList.add(&sigViewer);
 
 		SessionManager::init(world, renderer);
 		SessionManager::startSession(SessionManager::TRANSFORM_SESSION);
