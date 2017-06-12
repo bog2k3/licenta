@@ -121,9 +121,9 @@ int main(int argc, char* argv[]) {
 			if (updatePaused) {
 				GLText::get()->print("PAUSED", {45, 50, ViewportCoord::percent}, 0, 32, glm::vec3(1.f, 0.8f, 0.2f));
 			}
-			if (slowMo) {
-				GLText::get()->print("~~ Slow Motion ON ~~", {40, 5, ViewportCoord::percent}, 0, 20, glm::vec3(1.f, 0.5f, 0.1f));
-			}
+//			if (slowMo) {
+//				GLText::get()->print("~~ Slow Motion ON ~~", {40, 5, ViewportCoord::percent}, 0, 20, glm::vec3(1.f, 0.5f, 0.1f));
+//			}
 
 			// do the actual openGL render for the previous frame (which is independent of our world)
 			gltBegin();
