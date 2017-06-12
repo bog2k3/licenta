@@ -40,8 +40,9 @@ void SignalDataSource::update(float dt) {
 	}
 }
 
-SignalViewer::SignalViewer(ViewportCoord pos, float z, ViewportCoord size)
-	: pos_(pos), z_(z), size_(size) {
+SignalViewer::SignalViewer(ViewportCoord pos, float z, ViewportCoord size, std::set<std::string> viewportFilter)
+	: pos_(pos), z_(z), size_(size)
+	, viewportFilter_(viewportFilter) {
 }
 
 SignalViewer::~SignalViewer() {
@@ -71,7 +72,7 @@ void SignalViewer::draw() {
 	auto pos = pos_;
 
 	for (auto &s : sourceInfo_) {
-		Shape2D::get()->drawRectangle(pos, z_, size_, frameColor);
+		Shape2D::get()->drawRectangle(pos, z_, size_, frameColor, viewportFilter_);
 		float sMin = 1.e20f, sMax = -1.e20f;
 		// scan all samples and seek min/max values:
 		for (unsigned i=0; i<s.source_->getNumSamples(); i++) {
@@ -101,14 +102,14 @@ void SignalViewer::draw() {
 		for (unsigned i=0; i<s.source_->getNumSamples(); i++) {
 			ViewportCoord crtVertex = prevVertex.x() + widthPerSample +
 					pos.y() + size_.y() - pixelsPerYUnit * (s.source_->getSample(i)-sMin);
-			Shape2D::get()->drawLine(prevVertex, crtVertex, z_, s.color_);
+			Shape2D::get()->drawLine(prevVertex, crtVertex, z_, s.color_, viewportFilter_);
 			prevVertex = crtVertex;
 		}
 		// draw value axis division lines & labels
 		if (sMin * sMax < 0) {
 			// zero line is visible
 			auto zeroY = pos.y() + size_.y() + pixelsPerYUnit*sMin;
-			Shape2D::get()->drawLine(pos.x() + zeroY, pos.x() + size_.x() + zeroY, z_, frameColor);
+			Shape2D::get()->drawLine(pos.x() + zeroY, pos.x() + size_.x() + zeroY, z_, frameColor, viewportFilter_);
 		}
 		int nYDivs = maxYDivisions; //min(maxYDivisions, (int)(size.y / yDivisionSize));
 		int nDecimals = s.source_->getNumSamples() ? -log10(sMax - sMin) : 0;
@@ -117,7 +118,7 @@ void SignalViewer::draw() {
 		ViewportCoord yDivisionSize = size_.y() / nYDivs;
 		for (int i=1; i<nYDivs; i++) {
 			auto lineY = pos.y() + size_.y() + yDivisionSize * (-i);
-			Shape2D::get()->drawLine(pos.x() + lineY, pos.x() + size_.x() + lineY, z_, divisionColor);
+			Shape2D::get()->drawLine(pos.x() + lineY, pos.x() + size_.x() + lineY, z_, divisionColor, viewportFilter_);
 			std::stringstream ss;
 			ss << std::fixed << std::setprecision(nDecimals) << sMin + (sMax-sMin) * i / nYDivs;
 			GLText::get()->print(ss.str(), pos.x() - ViewportCoord{(ss.str().size()+1) * spacePerChar, -textSize/2} + lineY, z_, textSize, divisionLabelColor);

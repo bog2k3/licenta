@@ -14,6 +14,7 @@
 #include <glm/vec2.hpp>
 #include <memory>
 #include <vector>
+#include <set>
 #include <type_traits>
 #include <functional>
 
@@ -40,7 +41,7 @@ public:
 		}
 	};
 
-	SignalViewer(ViewportCoord pos, float z, ViewportCoord size);
+	SignalViewer(ViewportCoord pos, float z, ViewportCoord size, std::set<std::string> viewportFilter = {});
 	virtual ~SignalViewer();
 
 	// displayPrecision < 0 means auto. n>=0 means max n decimal places
@@ -62,6 +63,7 @@ private:
 	ViewportCoord pos_;
 	float z_;
 	ViewportCoord size_;
+	std::set<std::string> viewportFilter_;
 };
 
 class SignalDataSource {

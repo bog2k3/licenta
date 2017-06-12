@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../entities/Entity.cpp \
 ../entities/LabelEntity.cpp \
 ../entities/PathController.cpp \
+../entities/SigViewerEntity.cpp \
 ../entities/StaticMesh.cpp 
 
 OBJS += \
@@ -17,6 +18,7 @@ OBJS += \
 ./entities/Entity.o \
 ./entities/LabelEntity.o \
 ./entities/PathController.o \
+./entities/SigViewerEntity.o \
 ./entities/StaticMesh.o 
 
 CPP_DEPS += \
@@ -25,6 +27,7 @@ CPP_DEPS += \
 ./entities/Entity.d \
 ./entities/LabelEntity.d \
 ./entities/PathController.d \
+./entities/SigViewerEntity.d \
 ./entities/StaticMesh.d 
 
 
